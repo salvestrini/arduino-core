@@ -1,0 +1,24 @@
+This cmake project allows programs to be cross-compiled, 
+linked to the arduino core library, and uploaded with ease.
+
+Has only been tested on linux.  Should work on other platforms with tweaking.
+
+Includes a program to flash the LED attatched to pin 13 on the diecemilla.
+
+Includes tip from http://zedcode.blogspot.com/2007/02/gcc-c-link-problems-on-small-embedded.html
+
+All liability waived, all code that doesn't belong to someone else is free to use.
+
+contact at nebousuru@gmail.com.  beware the overactive spam filter.
+
+Requires
+	1) avr-gcc, avr-binutils, avr libc, etc
+	2) avrdude
+	3) cmake
+	4) bash
+
+To build:
+
+	1) cd bin
+	2) cmake ..
+	3) use avr-dragon loader or arduino bootloader
