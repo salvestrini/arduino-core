@@ -1,7 +1,6 @@
 include(${ArduinoCode_SOURCE_DIR}/arduino_diecimila_crosscompile.cmake)
 
-
-add_library (arduinocore
+add_library(arduinocore
 	HardwareSerial.cpp
 	Print.cpp
 	wiring.c
