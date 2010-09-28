@@ -8,7 +8,7 @@ SET(CDEBUG "-gstabs")
 SET(CWARN "-Wall -Wstrict-prototypes")
 SET(CTUNING "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums")
 SET(COPT "-Os")
-SET(CINCS "-I${ArduinoCode_SOURCE_DIR}/libarduinocore")
+SET(CINCS "-I${ArduinoCode_SOURCE_DIR}/libs/core")
 SET(CMCU "-mmcu=atmega168")
 SET(CDEFS "-DF_CPU=16000000")
 
