@@ -19,21 +19,18 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: wiring.h 590 2009-05-24 15:12:19Z dmellis $
+  $Id: wiring.h 1073 2010-08-17 21:50:41Z dmellis $
 */
 
 #ifndef Wiring_h
 #define Wiring_h
 
 #include <avr/io.h>
+#include <stdlib.h>
 #include "binary.h"
 
 #ifdef __cplusplus
 extern "C"{
-#endif
-
-#ifndef ARDUINO
-#define ARDUINO 16
 #endif
 
 #define HIGH 0x1
@@ -61,7 +58,12 @@ extern "C"{
 #define FALLING 2
 #define RISING 3
 
+#if defined(__AVR_ATmega1280__)
+#define INTERNAL1V1 2
+#define INTERNAL2V56 3
+#else
 #define INTERNAL 3
+#endif
 #define DEFAULT 1
 #define EXTERNAL 0
 
@@ -86,8 +88,8 @@ extern "C"{
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
 
-#define lowByte(w) ((w) & 0xff)
-#define highByte(w) ((w) >> 8)
+#define lowByte(w) ((uint8_t) ((w) & 0xff))
+#define highByte(w) ((uint8_t) ((w) >> 8))
 
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
 #define bitSet(value, bit) ((value) |= (1UL << (bit)))
@@ -110,19 +112,14 @@ int analogRead(uint8_t);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t, int);
 
-void beginSerial(long);
-void serialWrite(unsigned char);
-int serialAvailable(void);
-int serialRead(void);
-void serialFlush(void);
-
 unsigned long millis(void);
 unsigned long micros(void);
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 
-void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val);
+void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);

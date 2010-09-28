@@ -19,7 +19,7 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: pins_arduino.c 565 2009-03-25 10:50:00Z dmellis $
+  $Id: pins_arduino.c 963 2010-05-16 04:05:40Z dmellis $
 */
 
 #include <avr/io.h>
@@ -76,10 +76,6 @@
 #define PJ 10
 #define PK 11
 #define PL 12
-
-#define REPEAT8(x) x, x, x, x, x, x, x, x
-#define BV0TO7 _BV(0), _BV(1), _BV(2), _BV(3), _BV(4), _BV(5), _BV(6), _BV(7)
-#define BV7TO0 _BV(7), _BV(6), _BV(5), _BV(4), _BV(3), _BV(2), _BV(1), _BV(0)
 
 
 #if defined(__AVR_ATmega1280__)
