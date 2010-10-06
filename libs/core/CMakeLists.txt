@@ -1,5 +1,3 @@
-#include(${ArduinoCode_SOURCE_DIR}/cmake/arduino_diecimila_crosscompile.cmake)
-
 include(CheckIncludeFile)
 
 check_include_file(util/delay.h UTIL_DELAY_H)
