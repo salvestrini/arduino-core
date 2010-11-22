@@ -1,3 +1,5 @@
+MESSAGE(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
+
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/core)
 
 link_directories(${ArduinoCode_SOURCE_DIR}/libs/core)

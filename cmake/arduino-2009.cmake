@@ -1,9 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+# http://www.paraview.org/Wiki/CMake_Cross_Compiling
 
 MESSAGE(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
-
-
+#include(CMakeForceCompiler)
 
 set(CMAKE_SYSTEM_NAME      Generic)
 set(CMAKE_SYSTEM_VERSION   1)
@@ -34,23 +33,3 @@ set(CDEFS     "-DF_CPU=16000000")
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} ${CMCU} ${CDEBUG} ${CDEFS} ${COPT} ${CWARN} ${CSTANDARD} ${CEXTRA}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMCU} ${CDEFS} ${COPT}")
 set(CMAKE_EXE_LINKER_FLAGS "")
-
-
-
-
-project(ArduinoCode)
-
-#set(CMAKE_BUILD_TYPE       NONE)
-#set(CMAKE_VERBOSE_MAKEFILE OFF)
-#set(BUILD_SHARED_LIBS      OFF)
-set(CMAKE_MODULE_PATH      "${CMAKE_SOURCE_DIR}/cmake")
-
-include(arduino-2009)
-
-add_subdirectory(libs)
-add_subdirectory(src)
-
-#include(FeatureSummary)
-#print_enabled_features()
-
-#include(CMakePrintSystemInformation)
