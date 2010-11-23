@@ -15,7 +15,7 @@ fi
     exit 1
 }
 
-@AVR_DUDE@ -V -c dragon_isp -p m168 -b 19200 -P usb -U flash:w:$output || {
+@AVR_DUDE@ -V -c dragon_isp -p m168 -b 19200 -P /dev/ttyUSB0 -U flash:w:$output || {
     echo "$me: Cannot program device"
     exit 1
 }
