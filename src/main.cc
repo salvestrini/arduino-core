@@ -2,8 +2,11 @@
 
 extern "C" void __cxa_pure_virtual(void)
 {
+        Serial.print(__PRETTY_FUNCTION__);
+        Serial.println(" called");
+
 	for(;;) {
-                Serial.println(__PRETTY_FUNCTION__);
+                delay(1000);
 	}
 }
 
