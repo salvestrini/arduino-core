@@ -2,10 +2,12 @@ MESSAGE(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
 include(CheckIncludeFile)
 
-check_include_file(util/delay.h UTIL_DELAY_H)
-check_include_file(avr/delay.h  AVR_DELAY_H)
+check_include_file(util/delay.h HAVE_UTIL_DELAY_H)
+check_include_file(avr/delay.h  HAVE_AVR_DELAY_H)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/core)
+include_directories(${ArduinoCode_BINARY_DIR}/libs/core)
 
 add_library(core STATIC
   HardwareSerial.cpp

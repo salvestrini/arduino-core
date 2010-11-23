@@ -27,7 +27,20 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
+#include "config.h"
+
+#ifdef HAVE_UTIL_DELAY_H
+#include <util/delay.h>
+#else
+#ifdef HAVE_AVR_DELAY_H
 #include <avr/delay.h>
+#else
+#error Missing delay.h
+#endif
+#endif
+
+
 #include <stdio.h>
 #include <stdarg.h>
 

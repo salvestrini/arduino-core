@@ -1,0 +1,7 @@
+#ifndef LIBS_CORE_CONFIG_H
+#define LIBS_CORE_CONFIG_H
+
+#cmakedefine HAVE_UTIL_DELAY_H
+#cmakedefine HAVE_AVR_DELAY_H
+
+#endif
