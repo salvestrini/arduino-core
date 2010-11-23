@@ -47,6 +47,7 @@ set(CMAKE_MODULE_PATH      "${CMAKE_SOURCE_DIR}/cmake")
 
 include(arduino-diecimila)
 
+add_subdirectory(utils)
 add_subdirectory(libs)
 add_subdirectory(src)
 

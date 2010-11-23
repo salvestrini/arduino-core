@@ -1,0 +1,24 @@
+#!/bin/sh
+
+me="dragonisp"
+
+input=$1
+output="${input}.hex"
+
+if test x"$input" = x"" ; then
+    echo "$me: Missing input file"
+    exit 1
+fi
+
+@AVR_OBJCOPY@ -O ihex -R .eeprom $input $output || {
+    echo "$me: Cannot transform input file"
+    exit 1
+}
+
+@AVR_DUDE@ -V -c dragon_isp -p m168 -b 19200 -P usb -U flash:w:$output || {
+    echo "$me: Cannot program device"
+    exit 1
+}
+
+rm -f $output
+exit 0
