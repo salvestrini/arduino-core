@@ -19,7 +19,7 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: wiring.h 1073 2010-08-17 21:50:41Z dmellis $
+  $Id$
 */
 
 #ifndef Wiring_h
@@ -58,7 +58,7 @@ extern "C"{
 #define FALLING 2
 #define RISING 3
 
-#if defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #define INTERNAL1V1 2
 #define INTERNAL2V56 3
 #else

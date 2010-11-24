@@ -19,7 +19,7 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: wiring.c 970 2010-05-25 20:16:15Z dmellis $
+  $Id$
 */
 
 #include "wiring_private.h"
@@ -189,6 +189,8 @@ void init()
 	// this is better for motors as it ensures an even waveform
 	// note, however, that fast pwm mode can achieve a frequency of up
 	// 8 MHz (with a 16 MHz clock) at 50% duty cycle
+        
+        TCCR1B = 0;
 
 	// set timer 1 prescale factor to 64
 	sbi(TCCR1B, CS11);
@@ -209,7 +211,7 @@ void init()
 	sbi(TCCR2A, WGM20);
 #endif
 
-#if defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	// set timer 3, 4, 5 prescale factor to 64
 	sbi(TCCR3B, CS31);	sbi(TCCR3B, CS30);
 	sbi(TCCR4B, CS41);	sbi(TCCR4B, CS40);

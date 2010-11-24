@@ -1,4 +1,4 @@
-MESSAGE(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
+message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
 include(CheckIncludeFile)
 

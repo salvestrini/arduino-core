@@ -19,7 +19,7 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: pins_arduino.c 963 2010-05-16 04:05:40Z dmellis $
+  $Id$
 */
 
 #include <avr/io.h>
@@ -78,7 +78,7 @@
 #define PL 12
 
 
-#if defined(__AVR_ATmega1280__)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 const uint16_t PROGMEM port_to_mode_PGM[] = {
 	NOT_A_PORT,
 	&DDRA,
