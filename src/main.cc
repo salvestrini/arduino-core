@@ -1,4 +1,23 @@
-#include "WProgram.h"
+#include <WProgram.h>
+
+#if 0
+#include <Matrix.h>
+#include <Ethernet.h>
+#include <Client.h>
+#include <Server.h>
+#include <Udp.h>
+#include <Stepper.h>
+#include <binary.h>
+#include <Sprite.h>
+#include <Firmata.h>
+#include <Boards.h>
+#include <LiquidCrystal.h>
+#include <Wire.h>
+#include <EEPROM.h>
+#include <Servo.h>
+#include <SPI.h>
+#include <SoftwareSerial.h>
+#endif
 
 extern "C" void __cxa_pure_virtual(void)
 {
