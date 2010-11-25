@@ -1,9 +1,15 @@
 message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
+#
+# Core libraries
+#
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/core)
 
 link_directories(${ArduinoCode_SOURCE_DIR}/libs/core)
 
+#
+# External libraries
+#
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Matrix)
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Ethernet)
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Stepper)
@@ -28,12 +34,25 @@ link_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Servo)
 link_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/SPI)
 link_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/SoftwareSerial)
 
+#
+# Our libraries
+#
+add_subdirectory(SerLCD)
+
+include_directories(${ArduinoCode_SOURCE_DIR}/src/SerLCD)
+
+link_directories(${ArduinoCode_SOURCE_DIR}/src/SerLCD)
+
+#
+# Executable
+#
 add_executable(image
   main.cc
   )
 
 target_link_libraries(image
   core
+  SerLCD
 
   Matrix
   Ethernet
