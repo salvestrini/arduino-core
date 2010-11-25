@@ -51,8 +51,6 @@ class SerLCD : private SoftwareSerial {
         uint8_t columns_;
         uint8_t rows_;
 
-        void goTo(int position);
-
         void sendFE(uint8_t value);
         void send7C(uint8_t value);
 };

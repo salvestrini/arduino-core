@@ -67,24 +67,30 @@ void SerLCD::backlight(uint8_t value)
         send7C(128 + value);
 }
 
-void SerLCD::goTo(int position)
-{
-        int pos = 128;
-
-        if (position < 16){
-                pos += position;
-        } else if (position < 32){
-                pos += position + 48;
-        } else {
-                pos += position;
-        }
-
-        sendFE(pos);
-}
-
 void SerLCD::goTo(uint8_t row,
                   uint8_t column)
-{ goTo(row * (rows_ - 1) + column); }
+{
+        uint8_t position;
+
+        uint8_t base;
+        if (row == 0) {
+                base = columns_ * 0;
+        } else if (row == 1) {
+                base = 64;
+        } else if (row == 2) {
+                base = columns_ * 1;
+        } else if (row == 3) {
+                base = 80 + (columns_ == 20 ? 4 : 0);
+        } else {
+                // Unhandled
+                return;
+        }
+
+        position = base + column;
+        position |= 0x80;
+
+        sendFE(position);
+}
 
 void SerLCD::print(char p)
 { PAUSE(); SoftwareSerial::print(p); }
