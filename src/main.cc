@@ -60,11 +60,6 @@ void setup()
         LCD.backlight(15);
         LCD.clear();
 
-        LCD.goTo(0, 0);
-        LCD.print("CIAO");
-        LCD.goTo(1, 8);
-        LCD.print("MONDO");
-
         LCD.blinking(true);
         LCD.underline(true);
 }
@@ -73,7 +68,7 @@ int i = 0;
 
 void loop()
 {
-#if 0
+#if 1
         LCD.goTo(0, 0);
         LCD.print("i=");
         LCD.print(i);
