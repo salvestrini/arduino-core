@@ -15,12 +15,7 @@ fi
     exit 1
 }
 
-#@AVR_DUDE@ -v -v -v -v -V -c dragon_isp -p m168 -b 57600 -P /dev/ttyUSB0 -U flash:w:$output || {
-
-AVRBASE=../../local
-ISPTYPE=arduino
-
-$AVRBASE/bin/avrdude -C $AVRBASE/etc/avrdude.conf -D -F -V -c $ISPTYPE -b 57600 -p m168  -P /dev/ttyUSB0 -U flash:w:$output || {
+@AVR_DUDE@ -D -F -V -c arduino -b 57600 -p m168 -P /dev/ttyUSB0 -U flash:w:$output || {
     echo "$me: Cannot program device"
     exit 1
 }
