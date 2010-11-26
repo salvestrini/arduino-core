@@ -38,10 +38,13 @@ link_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/SoftwareSerial)
 # Our libraries
 #
 add_subdirectory(SerLCD)
+add_subdirectory(Menu)
 
 include_directories(${ArduinoCode_SOURCE_DIR}/src/SerLCD)
+include_directories(${ArduinoCode_SOURCE_DIR}/src/Menu)
 
 link_directories(${ArduinoCode_SOURCE_DIR}/src/SerLCD)
+link_directories(${ArduinoCode_SOURCE_DIR}/src/Menu)
 
 #
 # Executable
@@ -53,6 +56,7 @@ add_executable(image
 target_link_libraries(image
   core
   SerLCD
+  Menu
 
   Matrix
   Ethernet
