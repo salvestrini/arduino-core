@@ -23,8 +23,6 @@
 
 #if TEST
 
-#include "SerLCD.h"
-
 #if 0
 #include <Matrix.h>
 #include <Ethernet.h>
@@ -44,18 +42,57 @@
 #include <SoftwareSerial.h>
 #endif
 
+#include "SerLCD.h"
+#include "Menu.h"
+
 extern "C" void __cxa_pure_virtual(void)
 {
-	for(;;) {
+        for(;;) {
                 delay(1000);
-	}
+        }
 }
 
 SerLCD LCD = SerLCD(PIN_TX, SerLCD::TYPE_2x16, SerLCD::BAUD_9600);
 
+// Menu(const String & name,
+//      const Menu *   parent,
+//      const Menu *   child,
+//      const Menu *   sibling);
+
+Menu menu1     = Menu("menu1"  );
+Menu menu11    = Menu("menu11" );
+
+Menu menu2     = Menu("menu2"  );
+Menu menu21    = Menu("menu21" );
+Menu menu22    = Menu("menu22" );
+Menu menu23    = Menu("menu23" );
+
+Menu menu3     = Menu("menu3"  );
+
+Menu menu4     = Menu("menu4"  );
+Menu menu41    = Menu("menu41" );
+Menu menu42    = Menu("menu42" );
+Menu menu421   = Menu("menu421");
+Menu menu422   = Menu("menu422");
+
+MenuManager mm = MenuManager(&menu1);
+
 void setup()
 {
         pinMode(PIN_TX, OUTPUT);
+
+        menu1.link   (0       , &menu11 , &menu2   , 0       );
+        menu11.link  (&menu1  , 0       , 0        , 0       );
+        menu2.link   (0       , &menu21 , &menu3   , 0       );
+        menu21.link  (&menu2  , 0       , &menu22  , 0       );
+        menu22.link  (&menu2  , 0       , &menu23  , &menu21 );
+        menu23.link  (&menu2  , 0       , 0        , &menu22 );
+        menu3.link   (0       , 0       , &menu4   , 0       );
+        menu4.link   (0       , &menu41 , 0        , 0       );
+        menu41.link  (&menu4  , 0       , &menu42  , 0       );
+        menu42.link  (&menu4  , &menu421, 0        , &menu41 );
+        menu421.link (&menu42 , 0       , &menu422 , 0       );
+        menu422.link (&menu42 , 0       , 0        , &menu421);
 
         LCD.backlight(15);
         LCD.clear();
@@ -68,6 +105,17 @@ int i = 0;
 
 void loop()
 {
+        mm.sendEvent(MenuManager::EVENT_MOVE_SIBLING_NEXT);
+        delay(100);
+        mm.sendEvent(MenuManager::EVENT_MOVE_SIBLING_PREVIOUS);
+        delay(100);
+        mm.sendEvent(MenuManager::EVENT_MOVE_NEXT);
+        delay(100);
+        mm.sendEvent(MenuManager::EVENT_MOVE_PREVIOUS);
+        delay(100);
+        mm.sendEvent(MenuManager::EVENT_SELECT);
+        delay(100);
+
 #if 1
         LCD.goTo(0, 0);
         LCD.print("i=");
