@@ -10,12 +10,12 @@ if test x"$input" = x"" ; then
     exit 1
 fi
 
-@AVR_OBJCOPY@ -O ihex -R .eeprom $input $output || {
+@AVR_OBJCOPY_EXECUTABLE@ -O ihex -R .eeprom $input $output || {
     echo "$me: Cannot transform input file"
     exit 1
 }
 
-@AVR_DUDE@ -D -F -V -c arduino -b 57600 -p m168 -P /dev/ttyUSB0 -U flash:w:$output || {
+@AVRDUDE_EXECUTABLE@ -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
     echo "$me: Cannot program device"
     exit 1
 }

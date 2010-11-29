@@ -16,7 +16,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#define PIN_TX 2
+#define PIN_TX   2
+#define PIN_LED 13
+
 #define TEST   1
 
 #include <WProgram.h>
@@ -141,6 +143,7 @@ void loop()
 
 #else
 
+#if 0
 #include <SoftwareSerial.h>
 
 SoftwareSerial LCD = SoftwareSerial(0, txPin);
@@ -169,5 +172,20 @@ void loop()
         LCD.print(i++);
         delay(1000);
 }
+#else
+void setup()
+{
+        pinMode(PIN_LED, OUTPUT);
+}
+
+void loop()
+{
+        digitalWrite(PIN_LED, HIGH);
+        delay(1000);
+
+        digitalWrite(PIN_LED, LOW);
+        delay(1000);
+}
+#endif
 
 #endif
