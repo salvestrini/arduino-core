@@ -169,7 +169,7 @@ void MenuManager::sendEvent(const event e)
 
 void MenuManager::draw()
 {
-        if (current_) {
-                const String & name = current_->name();
-        }
+//        if (current_) {
+//                const String & name = current_->name();
+//        }
 }

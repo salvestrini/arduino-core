@@ -45,10 +45,10 @@ class Menu {
 
         void         select() const;
 
-        const Menu * parent()                const;
-        const Menu * child()                 const;
-        const Menu * sibling_next()          const;
-        const Menu * sibling_previous()      const;
+        const Menu * parent()           const;
+        const Menu * child()            const;
+        const Menu * sibling_next()     const;
+        const Menu * sibling_previous() const;
 
         const String & name() const;
 
