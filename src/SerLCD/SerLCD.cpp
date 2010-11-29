@@ -18,8 +18,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#include <SerLCD.h>
 #include <WProgram.h>
+#include "SerLCD.h"
 
 #define CMD_CLEAR           0x01
 
@@ -72,6 +72,7 @@ SerLCD::SerLCD(uint8_t     pin,
                 case TYPE_4x20: rows_ = 4, columns_ = 20; break;
                 case TYPE_4x16: rows_ = 4, columns_ = 16; break;
                 case TYPE_2x20: rows_ = 2, columns_ = 20; break;
+                default:
                 case TYPE_2x16: rows_ = 2, columns_ = 16; break;
         }
 
@@ -80,7 +81,7 @@ SerLCD::SerLCD(uint8_t     pin,
         // Set the port rate to the safe value
         begin(9600);
 
-#if 0
+#if 1
         // Reset the LCD (at 9600 bauds)
         reset();
 
@@ -90,12 +91,13 @@ SerLCD::SerLCD(uint8_t     pin,
         // Now change the port rate to its final value
         long baud;
         switch (rate) {
-                BAUD_2400:  baud = 2400;  break;
-                BAUD_4800:  baud = 4800;  break;
-                BAUD_9600:  baud = 9600;  break;
-                BAUD_14400: baud = 14400; break;
-                BAUD_19200: baud = 19200; break;
-                BAUD_38400: baud = 38400; break;
+                case BAUD_2400:  baud = 2400;  break;
+                case BAUD_4800:  baud = 4800;  break;
+                default:
+                case BAUD_9600:  baud = 9600;  break;
+                case BAUD_14400: baud = 14400; break;
+                case BAUD_19200: baud = 19200; break;
+                case BAUD_38400: baud = 38400; break;
         }
         begin(baud);
 
@@ -144,12 +146,13 @@ void SerLCD::reset()
 void SerLCD::setRate(SerLCD_rate rate)
 {
         switch (rate) {
-                BAUD_2400:  send7C(CMD_RATE_2400);  break;
-                BAUD_4800:  send7C(CMD_RATE_4800);  break;
-                BAUD_9600:  send7C(CMD_RATE_9600);  break;
-                BAUD_14400: send7C(CMD_RATE_14400); break;
-                BAUD_19200: send7C(CMD_RATE_19200); break;
-                BAUD_38400: send7C(CMD_RATE_38400); break;
+                case BAUD_2400:  send7C(CMD_RATE_2400);  break;
+                case BAUD_4800:  send7C(CMD_RATE_4800);  break;
+                default:
+                case BAUD_9600:  send7C(CMD_RATE_9600);  break;
+                case BAUD_14400: send7C(CMD_RATE_14400); break;
+                case BAUD_19200: send7C(CMD_RATE_19200); break;
+                case BAUD_38400: send7C(CMD_RATE_38400); break;
         }
 }
 
@@ -159,6 +162,7 @@ void SerLCD::setType(SerLCD_type type)
                 case TYPE_4x20: send7C(CMD_COLS_20); send7C(CMD_ROWS_4); break;
                 case TYPE_4x16: send7C(CMD_COLS_16); send7C(CMD_ROWS_4); break;
                 case TYPE_2x20: send7C(CMD_COLS_20); send7C(CMD_ROWS_2); break;
+                default:
                 case TYPE_2x16: send7C(CMD_COLS_16); send7C(CMD_ROWS_2); break;
         }
 }
