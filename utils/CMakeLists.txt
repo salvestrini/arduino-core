@@ -1,10 +1,10 @@
 message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
 find_program(AVR_OBJCOPY_EXECUTABLE avr-objcopy)
-message(STATUS "Binary ${AVR_OBJCOPY}")
+message(STATUS "Binary ${AVR_OBJCOPY_EXECUTABLE}")
 
 find_program(AVRDUDE_EXECUTABLE     avrdude)
-message(STATUS "Binary ${AVR_DUDE}")
+message(STATUS "Binary ${AVRDUDE_EXECUTABLE}")
 
 set(AVRDUDE_DEVICE "/dev/ttyUSB0" CACHE FILEPATH "ISP programming device")
 set(AVRDUDE_SPEED  "57600"        CACHE STRING   "ISP programming speed")
