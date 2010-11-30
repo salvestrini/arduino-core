@@ -11,3 +11,6 @@ set(AVRDUDE_SPEED  "57600"        CACHE STRING   "ISP programming speed")
 set(AVRDUDE_FAMILY "m168"         CACHE STRING   "ISP programming family")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/isp.in ${CMAKE_CURRENT_BINARY_DIR}/isp)
+
+add_custom_target(upload ${CMAKE_CURRENT_BINARY_DIR}/isp ${ArduinoCode_BINARY_DIR}/src/image)
+add_dependencies(upload image)
