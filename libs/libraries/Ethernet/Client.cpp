@@ -16,7 +16,7 @@ uint16_t Client::_srcport = 1024;
 Client::Client(uint8_t sock) : _sock(sock) {
 }
 
-Client::Client(uint8_t *ip, uint16_t port) : _ip(ip), _port(port), _sock(MAX_SOCK_NUM) {
+Client::Client(uint8_t *ip, uint16_t port) : _sock(MAX_SOCK_NUM), _ip(ip), _port(port) {
 }
 
 uint8_t Client::connect() {
