@@ -1,6 +1,6 @@
 #!/bin/sh
 
-me="dragonisp"
+me="isp"
 
 input=$1
 output="${input}.hex"
@@ -11,12 +11,12 @@ if test x"$input" = x"" ; then
 fi
 
 @AVR_OBJCOPY_EXECUTABLE@ -O ihex -R .eeprom $input $output || {
-    echo "$me: Cannot transform input file"
+    echo "$me: Cannot transform input file \`$input'"
     exit 1
 }
 
 @AVRDUDE_EXECUTABLE@ -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
-    echo "$me: Cannot program device"
+    echo "$me: Cannot program device on \`@AVRDUDE_DEVICE@'"
     exit 1
 }
 
