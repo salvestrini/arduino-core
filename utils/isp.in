@@ -15,7 +15,9 @@ fi
     exit 1
 }
 
-@AVRDUDE_EXECUTABLE@ -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
+VERBOSITY=""
+
+@AVRDUDE_EXECUTABLE@ $VERBOSITY -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
     echo "$me: Cannot program device on \`@AVRDUDE_DEVICE@'"
     exit 1
 }
