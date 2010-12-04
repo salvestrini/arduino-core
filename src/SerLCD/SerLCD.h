@@ -21,6 +21,7 @@
 #ifndef SERLCD_H
 #define SERLCD_H
 
+#include <stdint.h>
 #include <SoftwareSerial.h>
 
 class SerLCD : private SoftwareSerial {
