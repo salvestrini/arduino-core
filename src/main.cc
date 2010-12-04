@@ -19,11 +19,19 @@
 #define PIN_TX   2
 #define PIN_LED 13
 
-#define TEST   0
+#define TEST     0
 
 #include <WProgram.h>
 
-#if TEST
+#include "LED.h"
+
+LED l(PIN_LED);
+
+void panic()
+{ for (;;) { delay(100); l.flip(); } }
+
+extern "C" void __cxa_pure_virtual(void) { panic(); }
+
 
 #if 0
 #include <Matrix.h>
@@ -44,15 +52,29 @@
 #include <SoftwareSerial.h>
 #endif
 
+#if TEST == 0
+
+#include "LED.h"
+
+LED led(PIN_LED);
+
+void setup()
+{ }
+
+uint8_t i = 0;
+
+void loop()
+{
+        led.flip();
+        delay(i++);
+}
+
+#endif
+
+#if TEST == 1
+
 #include "SerLCD.h"
 #include "Menu.h"
-
-extern "C" void __cxa_pure_virtual(void)
-{
-        for(;;) {
-                delay(1000);
-        }
-}
 
 SerLCD LCD = SerLCD(PIN_TX, SerLCD::TYPE_2x16, SerLCD::BAUD_9600);
 
@@ -118,7 +140,6 @@ void loop()
         mm.sendEvent(MenuManager::EVENT_SELECT);
         delay(100);
 
-#if 1
         LCD.goTo(0, 0);
         LCD.print("i=");
         LCD.print(i);
@@ -136,17 +157,17 @@ void loop()
         LCD.print(i * 8);
 
         i++;
-#endif
 
         delay(100);
 }
 
-#else
+#endif
 
-#if 0
+#if TEST == 2
+
 #include <SoftwareSerial.h>
 
-SoftwareSerial LCD = SoftwareSerial(0, txPin);
+SoftwareSerial LCD = SoftwareSerial(0, PIN_TX);
 
 void setup()
 {
@@ -154,10 +175,10 @@ void setup()
 
         LCD.begin(9600);
 
-        LCD.print(0xFE, BYTE);   //command flag
-        LCD.print(0x01, BYTE);   //clear command.
-        LCD.print(0x7C, BYTE);   //command flag for backlight stuff
-        LCD.print(143,  BYTE);   //light level.
+        LCD.print(0xFE, BYTE);   // command flag
+        LCD.print(0x01, BYTE);   // clear command.
+        LCD.print(0x7C, BYTE);   // command flag for backlight stuff
+        LCD.print(143,  BYTE);   // light level
 
 }
 
@@ -165,27 +186,90 @@ int i = 0;
 
 void loop()
 {
-        LCD.print(0xFE, BYTE);   //command flag
-        LCD.print(0x01, BYTE);   //clear command.
+        LCD.print(0xFE, BYTE);   // command flag
+        LCD.print(0x01, BYTE);   // clear command
         delay(100);
 
         LCD.print(i++);
         delay(1000);
 }
-#else
+
+#endif
+
+#if TEST == 3
+
+//#include "sd_raw.h"
+
 void setup()
 {
-        pinMode(PIN_LED, OUTPUT);
+        Serial.begin(9600);
+
+        Serial.print("Initializing SD card ...\n");
+
+//        if (sd_raw_init() == 0) {
+//                Serial.print("Cannot initialize SD card\n");
+//                panic();
+//        }
 }
+
+int i = 0;
 
 void loop()
 {
-        digitalWrite(PIN_LED, HIGH);
+        Serial.print("Loop #");
+        Serial.print(i++);
+        Serial.print("\n");
+
         delay(1000);
 
-        digitalWrite(PIN_LED, LOW);
-        delay(1000);
+//        struct sd_raw_info info;
+//
+//        if (sd_raw_get_info(&info)) {
+//                Serial.print("SD card information:\n");
+//                Serial.print("  Manufacturer = ");
+//                Serial.print(info.manufacturer);
+//                Serial.print("\n");
+//
+//                Serial.print("  OEM          = ");
+//                Serial.print(info.oem[2]);
+//                Serial.print(info.oem[1]);
+//                Serial.print(info.oem[0]);
+//                Serial.print("\n");
+//
+//                Serial.print("  Product      = ");
+//                Serial.print(info.product[5]);
+//                Serial.print(info.product[4]);
+//                Serial.print(info.product[3]);
+//                Serial.print(info.product[2]);
+//                Serial.print(info.product[1]);
+//                Serial.print(info.product[0]);
+//                Serial.print("\n");
+//
+//                Serial.print("  Manufactured = ");
+//                Serial.print(info.manufacturing_month);
+//                Serial.print("/");
+//                Serial.print(2000 + info.manufacturing_year);
+//                Serial.print("\n");
+//
+//                Serial.print("  Copied       = ");
+//                Serial.print(info.flag_copy ? "yes" : "no");
+//                Serial.print("\n");
+//
+//                Serial.print("  Write prot.  = ");
+//                Serial.print(info.flag_write_protect ? "yes" : "no");
+//                Serial.print("\n");
+//
+//                Serial.print("  Format       = ");
+//                Serial.print(info.format);
+//                Serial.print("\n");
+//
+//        } else {
+//                Serial.print("Cannot read card information\n");
+//        }
 }
+
 #endif
 
+#if TEST >= 4
+#error Undefined test
 #endif
