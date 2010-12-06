@@ -54,7 +54,6 @@ extern "C" void __cxa_pure_virtual(void) { panic(); }
 #endif
 
 #if TEST == 0
-
 #include "LED.h"
 
 void setup()
@@ -71,7 +70,6 @@ void loop()
 #endif
 
 #if TEST == 1
-
 #include "SerLCD.h"
 #include "Menu.h"
 
@@ -163,7 +161,6 @@ void loop()
 #endif
 
 #if TEST == 2
-
 #include <SoftwareSerial.h>
 
 SoftwareSerial LCD = SoftwareSerial(0, PIN_LDC_TX);
@@ -196,7 +193,6 @@ void loop()
 #endif
 
 #if TEST == 3
-
 //#include "sd_raw.h"
 
 void setup()
@@ -270,24 +266,6 @@ void loop()
 #endif
 
 #if TEST == 4
-
-#include "Console.h"
-
-Console console; //(PIN_SER_RX, PIN_SER_TX);
-
-void setup()
-{
-}
-
-void loop()
-{
-        console.run();
-        delay(100);
-        led.flip();
-}
-#endif
-
-#if TEST == 5
 void setup()
 {
         Serial.begin(9600);
@@ -304,6 +282,22 @@ void loop()
         Serial.print('#');
         delay(100);
         row++;
+}
+#endif
+
+#if TEST == 5
+#include "Console.h"
+
+Console console; //(PIN_SER_RX, PIN_SER_TX);
+
+void setup()
+{ }
+
+void loop()
+{
+        console.run();
+        //        delay(100);
+        led.flip();
 }
 #endif
 
