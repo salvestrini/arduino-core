@@ -22,10 +22,6 @@
 
 #include <inttypes.h>
 
-uint16_t whackDelay2(uint16_t delay);
-
-static void recv(void);
-
 class AFSoftSerial
 {
   private:

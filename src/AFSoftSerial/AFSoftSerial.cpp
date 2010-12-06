@@ -59,20 +59,7 @@ void whackDelay(uint16_t delay) {
  * Interrupts
  ******************************************************************************/
 
-SIGNAL(SIG_PIN_CHANGE0) {
-  if ((_receivePin >=8) && (_receivePin <= 13)) {
-    recv();
-  }
-}
-SIGNAL(SIG_PIN_CHANGE2)
-{
-  if (_receivePin <8) {
-    recv();
-  }
-}
-
-
-void recv(void) { 
+static void recv(void) { 
   char i, d = 0; 
   if (digitalRead(_receivePin)) 
     return;       // not ready! 
@@ -91,7 +78,17 @@ void recv(void) {
   _receive_buffer_index++;  // got a byte 
 } 
   
-
+SIGNAL(SIG_PIN_CHANGE0) {
+  if ((_receivePin >=8) && (_receivePin <= 13)) {
+    recv();
+  }
+}
+SIGNAL(SIG_PIN_CHANGE2)
+{
+  if (_receivePin <8) {
+    recv();
+  }
+}
 
 /******************************************************************************
  * Constructors
