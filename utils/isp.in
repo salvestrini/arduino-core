@@ -15,9 +15,11 @@ fi
     exit 1
 }
 
-VERBOSITY=""
+@AVR_SIZE_EXECUTABLE@ -d $input
 
-@AVRDUDE_EXECUTABLE@ $VERBOSITY -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
+AVRDUDE_VERBOSITY=""
+
+@AVRDUDE_EXECUTABLE@ $AVRDUDE_VERBOSITY -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
     echo "$me: Cannot program device on \`@AVRDUDE_DEVICE@'"
     exit 1
 }

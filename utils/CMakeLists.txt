@@ -3,6 +3,9 @@ message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 find_program(AVR_OBJCOPY_EXECUTABLE avr-objcopy)
 message(STATUS "Binary ${AVR_OBJCOPY_EXECUTABLE}")
 
+find_program(AVR_SIZE_EXECUTABLE avr-size)
+message(STATUS "Binary ${AVR_SIZE_EXECUTABLE}")
+
 find_program(AVRDUDE_EXECUTABLE     avrdude)
 message(STATUS "Binary ${AVRDUDE_EXECUTABLE}")
 
