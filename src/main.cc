@@ -279,7 +279,7 @@ void setup()
 
 void loop()
 {
-        //console.run();
+        console.run();
         delay(100);
         led.flip();
 }
