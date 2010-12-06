@@ -22,13 +22,13 @@
 #define CONSOLE_H
 
 #include <stdint.h>
-#include <SoftwareSerial.h>
+#include <AFSoftSerial.h>
 
 #define CONSOLE_RX_PIN 0
 #define CONSOLE_TX_PIN 1
 #define CONSOLE_RATE   9600
 
-class Console : private SoftwareSerial {
+class Console : private AFSoftSerial {
  public:
         Console(uint8_t rx_pin = CONSOLE_RX_PIN,
                 uint8_t tx_pin = CONSOLE_TX_PIN,

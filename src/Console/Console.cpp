@@ -24,7 +24,7 @@ Console::Console(uint8_t rx_pin,
                  uint8_t tx_pin,
                  long    rate,
                  bool    echo) :
-        SoftwareSerial(rx_pin, tx_pin),
+        AFSoftSerial(rx_pin, tx_pin),
         echo_(echo)
 {
         begin(rate);
@@ -35,11 +35,12 @@ Console::~Console()
 
 void Console::run()
 {
-        int c = read();
-        if (c != -1) {
-                if (echo_) {
-                        print(static_cast<uint8_t>(c));
+        if (available()) {
+                int c = read();
+                if (c != -1) {
+                        if (echo_) {
+                                print(static_cast<uint8_t>(c));
+                        }
                 }
         }
 }
-
