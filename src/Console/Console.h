@@ -22,22 +22,20 @@
 #define CONSOLE_H
 
 #include <stdint.h>
-//#include <AFSoftSerial.h>
+#include <AFSoftSerial.h>
 //#include <NewSoftSerial.h>
-#include <HardwareSerial.h>
+//#include <HardwareSerial.h>
 
 #define CONSOLE_RX_PIN 0
 #define CONSOLE_TX_PIN 1
 #define CONSOLE_RATE   9600
 
-class Console {
+class Console : public AFSoftSerial {
  public:
-        Console(long rate = CONSOLE_RATE,
-                bool echo = true);
-//        Console(uint8_t rx_pin = CONSOLE_RX_PIN,
-//                uint8_t tx_pin = CONSOLE_TX_PIN,
-//                long    rate   = CONSOLE_RATE,
-//                bool    echo   = true);
+        Console(uint8_t rx_pin = CONSOLE_RX_PIN,
+                uint8_t tx_pin = CONSOLE_TX_PIN,
+                long    rate   = CONSOLE_RATE,
+                bool    echo   = true);
         ~Console();
 
         void run();

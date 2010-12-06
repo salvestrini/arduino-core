@@ -21,24 +21,19 @@
 #include <WProgram.h>
 #include "Console.h"
 
-//Console::Console(uint8_t rx_pin,
-//                 uint8_t tx_pin,
-//                 long    rate,
-//                 bool    echo) :
-//        AFSoftSerial(rx_pin, tx_pin),
-//        echo_(echo)
-//{
-//        pinMode(rx_pin, INPUT);
-//        pinMode(tx_pin, OUTPUT);
-//
-//        begin(rate);
-//}
-
-Console::Console(long rate,
-                 bool echo) :
+Console::Console(uint8_t rx_pin,
+                 uint8_t tx_pin,
+                 long    rate,
+                 bool    echo) :
+        AFSoftSerial(rx_pin, tx_pin),
         echo_(echo)
 {
-        Serial.begin(rate);
+        pinMode(rx_pin, INPUT);
+        pinMode(tx_pin, OUTPUT);
+
+        begin(rate);
+
+        println("Initialized");
 }
 
 Console::~Console()
@@ -46,14 +41,14 @@ Console::~Console()
 
 void Console::run()
 {
-        Serial.write('.');
+        if (!available()) {
+                return;
+        }
 
-        if (Serial.available()) {
-                int c = Serial.read();
-                if (c != -1) {
-                        if (echo_) {
-                                Serial.write(static_cast<uint8_t>(c));
-                        }
-                }
+        println("Available");
+
+        int c = read();
+        if (echo_) {
+                print(static_cast<uint8_t>(c));
         }
 }
