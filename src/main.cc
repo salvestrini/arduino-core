@@ -16,10 +16,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#define PIN_TX   2
-#define PIN_LED 13
+#define PIN_SER_RX  1
+#define PIN_SER_TX  0
+#define PIN_LCD     2
+#define PIN_LED    13
 
-#define TEST     4
+#define TEST        5
 
 #include <WProgram.h>
 
@@ -73,7 +75,7 @@ void loop()
 #include "SerLCD.h"
 #include "Menu.h"
 
-SerLCD LCD = SerLCD(PIN_TX, SerLCD::TYPE_2x16, SerLCD::BAUD_9600);
+SerLCD LCD = SerLCD(PIN_LCD, SerLCD::TYPE_2x16, SerLCD::BAUD_9600);
 
 // Menu(const String & name,
 //      const Menu *   parent,
@@ -100,7 +102,7 @@ MenuManager mm = MenuManager(&menu1);
 
 void setup()
 {
-        pinMode(PIN_TX, OUTPUT);
+        pinMode(PIN_LCD, OUTPUT);
 
         menu1.link   (0       , &menu11 , &menu2   , 0       );
         menu11.link  (&menu1  , 0       , 0        , 0       );
@@ -164,11 +166,11 @@ void loop()
 
 #include <SoftwareSerial.h>
 
-SoftwareSerial LCD = SoftwareSerial(0, PIN_TX);
+SoftwareSerial LCD = SoftwareSerial(0, PIN_LDC_TX);
 
 void setup()
 {
-        pinMode(PIN_TX, OUTPUT);
+        pinMode(PIN_LCD, OUTPUT);
 
         LCD.begin(9600);
 
@@ -271,7 +273,7 @@ void loop()
 
 #include "Console.h"
 
-Console console;
+Console console; //(PIN_SER_RX, PIN_SER_TX);
 
 void setup()
 {
@@ -285,6 +287,26 @@ void loop()
 }
 #endif
 
-#if TEST > 4
+#if TEST == 5
+void setup()
+{
+        Serial.begin(9600);
+}
+
+int row = 0;
+
+void loop()
+{
+        if ((row % 20) == 0) {
+                Serial.print('\n');
+                Serial.print('\r');
+        }
+        Serial.print('#');
+        delay(100);
+        row++;
+}
+#endif
+
+#if TEST > 5
 #error Undefined test
 #endif
