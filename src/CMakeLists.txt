@@ -61,6 +61,10 @@ add_subdirectory(LED)
 include_directories(${ArduinoCode_SOURCE_DIR}/src/LED)
 link_directories(${ArduinoCode_BINARY_DIR}/src/LED)
 
+add_subdirectory(Console)
+include_directories(${ArduinoCode_SOURCE_DIR}/src/Console)
+link_directories(${ArduinoCode_BINARY_DIR}/src/Console)
+
 #
 # Executable
 #
@@ -73,6 +77,7 @@ target_link_libraries(image
   Menu
   microSD
   LED
+  Console
 
   Matrix
   Ethernet

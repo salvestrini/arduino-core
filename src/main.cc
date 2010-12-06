@@ -19,19 +19,18 @@
 #define PIN_TX   2
 #define PIN_LED 13
 
-#define TEST     0
+#define TEST     4
 
 #include <WProgram.h>
 
 #include "LED.h"
 
-LED l(PIN_LED);
+LED led(PIN_LED);
 
 void panic()
-{ for (;;) { delay(100); l.flip(); } }
+{ for (;;) { delay(100); led.flip(); } }
 
 extern "C" void __cxa_pure_virtual(void) { panic(); }
-
 
 #if 0
 #include <Matrix.h>
@@ -55,8 +54,6 @@ extern "C" void __cxa_pure_virtual(void) { panic(); }
 #if TEST == 0
 
 #include "LED.h"
-
-LED led(PIN_LED);
 
 void setup()
 { }
@@ -270,6 +267,24 @@ void loop()
 
 #endif
 
-#if TEST >= 4
+#if TEST == 4
+
+#include "Console.h"
+
+Console console;
+
+void setup()
+{
+}
+
+void loop()
+{
+        //console.run();
+        delay(100);
+        led.flip();
+}
+#endif
+
+#if TEST > 4
 #error Undefined test
 #endif
