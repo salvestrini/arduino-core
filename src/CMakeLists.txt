@@ -53,9 +53,9 @@ add_subdirectory(Menu)
 include_directories(${ArduinoCode_SOURCE_DIR}/src/Menu)
 link_directories(${ArduinoCode_BINARY_DIR}/src/Menu)
 
-add_subdirectory(microSD)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/microSD)
-link_directories(${ArduinoCode_BINARY_DIR}/src/microSD)
+#add_subdirectory(microSD)
+#include_directories(${ArduinoCode_SOURCE_DIR}/src/microSD)
+#link_directories(${ArduinoCode_BINARY_DIR}/src/microSD)
 
 add_subdirectory(LED)
 include_directories(${ArduinoCode_SOURCE_DIR}/src/LED)
@@ -83,7 +83,7 @@ add_executable(image
 target_link_libraries(image
   SerLCD
   Menu
-  microSD
+#  microSD
   LED
 #  NewSoftSerial
   Console
