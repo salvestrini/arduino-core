@@ -30,7 +30,7 @@
 LED led(PIN_LED);
 
 void panic()
-{ for (;;) { delay(100); led.flip(); } }
+{ for (;;) { delay(100); led.toggle(); } }
 
 extern "C" void __cxa_pure_virtual(void) { panic(); }
 
@@ -63,7 +63,7 @@ uint8_t i = 0;
 
 void loop()
 {
-        led.flip();
+        led.toggle();
         delay(i++);
 }
 
@@ -297,7 +297,7 @@ void loop()
 {
         console.run();
         //        delay(100);
-        led.flip();
+        led.toggle();
 }
 #endif
 

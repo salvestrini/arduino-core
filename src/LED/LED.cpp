@@ -38,5 +38,5 @@ void LED::off()
         state_ = false;
 }
 
-void LED::flip()
+void LED::toggle()
 { (void) (state_ ? off() : on()); }

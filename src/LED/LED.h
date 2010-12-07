@@ -29,7 +29,7 @@ public:
 
         void on();
         void off();
-        void flip();
+        void toggle();
 
 private:
         uint8_t pin_;
