@@ -68,6 +68,10 @@ add_subdirectory(Fat16)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Fat16)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/Fat16)
 
+add_subdirectory(FAT16)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/FAT16)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/FAT16)
+
 #add_subdirectory(NewSoftSerial)
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/NewSoftSerial)
 #link_directories(${CMAKE_CURRENT_BINARY_DIR}/NewSoftSerial)
