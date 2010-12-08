@@ -46,35 +46,39 @@ link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/SoftwareSerial)
 # Our libraries
 #
 add_subdirectory(SerLCD)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/SerLCD)
-link_directories(${ArduinoCode_BINARY_DIR}/src/SerLCD)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SerLCD)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/SerLCD)
 
 add_subdirectory(Menu)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/Menu)
-link_directories(${ArduinoCode_BINARY_DIR}/src/Menu)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Menu)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/Menu)
 
 add_subdirectory(LED)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/LED)
-link_directories(${ArduinoCode_BINARY_DIR}/src/LED)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/LED)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/LED)
 
 #
 # Third parties
 #
 add_subdirectory(SdFat)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/SdFat)
-link_directories(${ArduinoCode_BINARY_DIR}/src/SdFat)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SdFat)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/SdFat)
+
+add_subdirectory(Fat16)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Fat16)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/Fat16)
 
 #add_subdirectory(NewSoftSerial)
-#include_directories(${ArduinoCode_SOURCE_DIR}/src/NewSoftSerial)
-#link_directories(${ArduinoCode_BINARY_DIR}/src/NewSoftSerial)
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/NewSoftSerial)
+#link_directories(${CMAKE_CURRENT_BINARY_DIR}/NewSoftSerial)
 
 add_subdirectory(AFSoftSerial)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/AFSoftSerial)
-link_directories(${ArduinoCode_BINARY_DIR}/src/AFSoftSerial)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/AFSoftSerial)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/AFSoftSerial)
 
 add_subdirectory(Console)
-include_directories(${ArduinoCode_SOURCE_DIR}/src/Console)
-link_directories(${ArduinoCode_BINARY_DIR}/src/Console)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Console)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/Console)
 
 #
 # Executable
@@ -86,12 +90,13 @@ add_executable(image
 target_link_libraries(image
   SerLCD
   Menu
-#  microSD
   LED
-#  NewSoftSerial
   Console
+
+#  NewSoftSerial
   AFSoftSerial
   SdFat
+  Fat16
 
   Matrix
   Ethernet

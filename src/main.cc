@@ -21,16 +21,26 @@
 #define PIN_LCD     2
 #define PIN_LED    13
 
-#define TEST        6
+#define PANIC_LED_SUPPORT 1
+#define TEST              7
 
 #include <WProgram.h>
 
+#if PANIC_LED_SUPPORT
 #include "LED.h"
 
 LED led(PIN_LED);
+#endif
 
 void panic()
-{ for (;;) { delay(100); led.toggle(); } }
+{
+        for (;;) {
+                delay(100);
+#if PANIC_LED_SUPPORT
+                led.toggle();
+#endif
+        }
+}
 
 extern "C" void __cxa_pure_virtual(void) { panic(); }
 
@@ -303,12 +313,90 @@ void loop()
 
 #if TEST == 6
 #include <SdFat.h>
-#include <SdFatUtil.h>
+//#include <SdFatUtil.h>
 
 Sd2Card  card;
 SdVolume volume;
-SdFile   root;
-SdFile   file;
+//SdFile   root;
+//SdFile   file;
+
+#define error(s) error_P(s)
+
+void error(const char * str) {
+        Serial.print("error: ");
+        Serial.println(str);
+ 
+       if (card.errorCode()) {
+                Serial.print("SD error: ");
+                Serial.print(card.errorCode(), HEX);
+                Serial.print(',');
+                Serial.println(card.errorData(), HEX);
+        }
+
+        panic();
+}
+
+void setup(void) {
+        Serial.begin(9600);
+
+#if 0
+        Serial.println();
+        Serial.println("type any character to start");
+        while (!Serial.available());
+        Serial.println();
+#endif
+
+        // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+        // breadboards.  use SPI_FULL_SPEED for better performance.
+        if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
+
+        // initialize a FAT volume
+        if (!volume.init(&card)) error("volume.init failed");
+
+//  // open the root directory
+//  if (!root.openRoot(&volume)) error("openRoot failed");
+//
+//  // open a file
+//  if (file.open(&root, "PRINT00.TXT", O_READ)) {
+//          //Serial.println("Opened PRINT00.TXT");
+//  }
+//  else if (file.open(&root, "WRITE00.TXT", O_READ)) {
+//          //Serial.println("Opened WRITE00.TXT");
+//  }
+//  else{
+//          //error("file.open failed");
+//  }
+//  //Serial.println();
+//
+//#if 0  
+//  // copy file to serial port
+//  int16_t n;
+//  uint8_t buf[7];// nothing special about 7, just a lucky number.
+//  while ((n = file.read(buf, sizeof(buf))) > 0) {
+//    for (uint8_t i = 0; i < n; i++) Serial.print(buf[i]);
+//  }
+//  /* easier way
+//  int16_t c;
+//  while ((c = file.read()) > 0) Serial.print((char)c);
+//  */
+//  Serial.println("\nDone");
+//#endif
+}
+
+void loop(void)
+{
+        panic();
+}
+#endif
+
+#if TEST == 7
+/*
+ * List files in root directory.
+ */
+#include <Fat16.h>
+#include <Fat16util.h>
+
+SdCard card;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
@@ -316,60 +404,38 @@ SdFile   file;
 void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
-  if (card.errorCode()) {
+  if (card.errorCode) {
     PgmPrint("SD error: ");
-    Serial.print(card.errorCode(), HEX);
-    Serial.print(',');
-    Serial.println(card.errorData(), HEX);
+    Serial.println(card.errorCode, HEX);
   }
   while(1);
 }
 
-void setup(void) {
+void setup() {
   Serial.begin(9600);
-  Serial.println();
-  Serial.println("type any character to start");
+  PgmPrintln("Type any character to start");
   while (!Serial.available());
+  
+  PgmPrint("Free RAM: ");
+  Serial.println(FreeRam());  
+ 
+  if (!card.init()) error("card.init failed!");
+  
+  if (!Fat16::init(&card)) error("Fat16::init failed!");
+  
   Serial.println();
-
-  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
-  // breadboards.  use SPI_FULL_SPEED for better performance.
-  if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
-
-  // initialize a FAT volume
-  if (!volume.init(&card)) error("volume.init failed");
-
-  // open the root directory
-  if (!root.openRoot(&volume)) error("openRoot failed");
-
-  // open a file
-  if (file.open(&root, "PRINT00.TXT", O_READ)) {
-    Serial.println("Opened PRINT00.TXT");
-  }
-  else if (file.open(&root, "WRITE00.TXT", O_READ)) {
-    Serial.println("Opened WRITE00.TXT");
-  }
-  else{
-    error("file.open failed");
-  }
-  Serial.println();
-
-  // copy file to serial port
-  int16_t n;
-  uint8_t buf[7];// nothing special about 7, just a lucky number.
-  while ((n = file.read(buf, sizeof(buf))) > 0) {
-    for (uint8_t i = 0; i < n; i++) Serial.print(buf[i]);
-  }
-  /* easier way
-  int16_t c;
-  while ((c = file.read()) > 0) Serial.print((char)c);
-  */
-  Serial.println("\nDone");
+  
+  PgmPrintln("Name          Modify Date/Time    Size");
+  
+  Fat16::ls(LS_DATE | LS_SIZE);
 }
 
-void loop(void) {}
+void loop()
+{
+        panic();
+}
 #endif
 
-#if TEST > 6
+#if TEST > 7
 #error Undefined test
 #endif

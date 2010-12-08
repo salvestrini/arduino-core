@@ -13,5 +13,5 @@ set(ARDUINO_C_FLAGS_OPT        "-Os")
 
 set(ARDUINO_CXX_FLAGS_STANDARD "-std=gnu++98")
 set(ARDUINO_CXX_FLAGS_WARN     "-Wall")
-set(ARDUINO_CXX_FLAGS_TUNING   "")
+set(ARDUINO_CXX_FLAGS_TUNING   "-fno-rtti -fno-enforce-eh-specs -fno-threadsafe-statics -fvisibility-inlines-hidden")
 set(ARDUINO_CXX_FLAGS_OPT      "-Os")
