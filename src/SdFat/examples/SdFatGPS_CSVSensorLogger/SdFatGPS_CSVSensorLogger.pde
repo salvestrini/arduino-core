@@ -95,8 +95,7 @@ void error(uint8_t errno) {
    } 
 }
 
-void setup()                    // run once, when the sketch starts
-{
+void setup() {                   // run once, when the sketch starts
   Serial.begin(4800);
   putstring_nl("GPSlogger");
   pinMode(led1Pin, OUTPUT);      // sets the digital pin as output
@@ -104,15 +103,17 @@ void setup()                    // run once, when the sketch starts
   pinMode(powerpin, OUTPUT);
   digitalWrite(powerpin, LOW);
   
-  if (!card.init()) {
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) {
     putstring_nl("Card init. failed!"); 
     error(1);
   }
-  if (!volume.init(card)) {
+  if (!volume.init(&card)) {
     putstring_nl("No partition!"); 
     error(2);
   }
-  if (!root.openRoot(volume)) {
+  if (!root.openRoot(&volume)) {
         putstring_nl("Can't open root dir"); 
     error(3);
   }
@@ -120,7 +121,7 @@ void setup()                    // run once, when the sketch starts
   for (i = 0; i < 100; i++) {
     buffer[6] = '0' + i/10;
     buffer[7] = '0' + i%10;
-    if (f.open(root, buffer, O_CREAT | O_EXCL | O_WRITE)) break;
+    if (f.open(&root, buffer, O_CREAT | O_EXCL | O_WRITE)) break;
   }
   
   if(!f.isOpen()) {
@@ -176,8 +177,8 @@ void setup()                    // run once, when the sketch starts
 #endif
 }
 
-void loop()                     // run over and over again
-{
+void loop() {                    // run over and over again
+
   //Serial.println(Serial.available(), DEC);
   char c;
   uint8_t sum;
@@ -233,6 +234,10 @@ void loop()                     // run over and over again
           digitalWrite(led1Pin, HIGH);
           fix = 1;
         }
+      } else {
+        // not GPRMC
+        bufferidx = 0;
+        return;
       }
 #if LOG_RMC_FIXONLY
       if (!fix) {

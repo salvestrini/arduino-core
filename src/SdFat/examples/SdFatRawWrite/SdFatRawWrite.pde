@@ -39,8 +39,8 @@ uint32_t bgnBlock, endBlock;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -52,20 +52,22 @@ void error_P(const char *str)
   while(1);
 }
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(9600);
 }
 
-void loop(void)
-{
+void loop(void) {
   Serial.flush();
   PgmPrintln("Type any character to start");
   while (!Serial.available());
 
   // initialize the SD card
   uint32_t t = millis();
-  if (!card.init()) error("card.init");
+  
+  // initialize the SD card at SPI_FULL_SPEED for best performance.
+  // try SPI_HALF_SPEED if bus errors occur.
+  if (!card.init(SPI_FULL_SPEED)) error("card.init failed");
+  
   t = millis() - t;
   
   PgmPrint("Card init time: ");
@@ -73,28 +75,28 @@ void loop(void)
   PgmPrintln(" millis");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
   
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   // delete possible existing file
-  SdFile::remove(root, "RAW.TXT");
+  SdFile::remove(&root, "RAW.TXT");
   
   // create a contiguous file
-  if (!file.createContiguous(root, "RAW.TXT", 512UL*BLOCK_COUNT)) {
-    error("create");
+  if (!file.createContiguous(&root, "RAW.TXT", 512UL*BLOCK_COUNT)) {
+    error("createContiguous failed");
   }
   // get the location of the file's blocks
-  if (!file.contiguousRange(bgnBlock, endBlock)) {
-    error("contiguousRange");
+  if (!file.contiguousRange(&bgnBlock, &endBlock)) {
+    error("contiguousRange failed");
   }
   //*********************NOTE**************************************
   // NO SdFile calls are allowed while cache is used for raw writes
   //***************************************************************
   
   // clear the cache and use it as a 512 byte buffer
-  uint8_t *pCache = volume.cacheClear();
+  uint8_t* pCache = volume.cacheClear();
   
   // fill cache with eight lines of 64 bytes each
   memset(pCache, ' ', 512);
@@ -117,9 +119,9 @@ void loop(void)
   PgmPrintln(" seconds");
   
   // tell card to setup for multiple block write with pre-erase
-  if (!card.erase(bgnBlock, endBlock)) error("erase");  
+  if (!card.erase(bgnBlock, endBlock)) error("card.erase failed");
   if (!card.writeStart(bgnBlock, BLOCK_COUNT)) {
-    error("writeStart");
+    error("writeStart failed");
   }
   // init stats
   uint16_t overruns = 0;
@@ -139,9 +141,9 @@ void loop(void)
       n /= 10;
     }
     // write a 512 byte block
-    uint32_t tw = millis();
-    if (!card.writeData(pCache)) error("writeData");
-    tw = millis() - tw;
+    uint32_t tw = micros();
+    if (!card.writeData(pCache)) error("writeData failed");
+    tw = micros() - tw;
     
     // check for max write time
     if (tw > maxWriteTime) {
@@ -162,7 +164,7 @@ void loop(void)
   t = millis() - t;
   
   // end multiple block write mode
-  if (!card.writeStop()) error("writeStop");
+  if (!card.writeStop()) error("writeStop failed");
   
   PgmPrintln("Done");
   
@@ -175,7 +177,7 @@ void loop(void)
   
   PgmPrint("Max write time: ");
   Serial.print(maxWriteTime);
-  PgmPrintln(" millis");
+  PgmPrintln(" micros");
   
   // close files for next pass of loop
   root.close();

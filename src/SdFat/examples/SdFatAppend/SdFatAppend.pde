@@ -14,8 +14,8 @@ SdFile file;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -27,21 +27,21 @@ void error_P(const char *str)
   while(1);
 }
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(9600);
   Serial.println();
   PgmPrintln("Type any character to start");
   while (!Serial.available());
   
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
 
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
 
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   char name[] = "APPEND.TXT";
   PgmPrint("Appending to: ");
@@ -54,7 +54,9 @@ void setup(void)
     // O_CREAT - create the file if it does not exist
     // O_APPEND - seek to the end of the file prior to each write
     // O_WRITE - open for write
-    if (!file.open(root, name, O_CREAT | O_APPEND | O_WRITE)) error("open");
+    if (!file.open(&root, name, O_CREAT | O_APPEND | O_WRITE)) {
+      error("open failed");
+    }
     // print 100 lines to file
     for (uint8_t j = 0; j < 100; j++) {
       file.print("line ");
@@ -64,7 +66,8 @@ void setup(void)
       file.print(" millis = ");
       file.println(millis());
     }
-    if (!file.close() || file.writeError) error("close/write");
+    if (file.writeError) error("write failed");
+    if (!file.close()) error("close failed");
     if (i > 0 && i%25 == 0)Serial.println();
     Serial.print('.');
   }

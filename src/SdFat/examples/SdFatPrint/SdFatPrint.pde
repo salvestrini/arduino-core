@@ -13,8 +13,8 @@ SdFile file;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -26,21 +26,21 @@ void error_P(const char *str)
   while(1);
 }
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(9600);
   Serial.println();
   PgmPrintln("Type any character to start");
   while (!Serial.available());
   
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
   
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   // create a new file
   char name[] = "PRINT00.TXT";
@@ -48,7 +48,7 @@ void setup(void)
     name[5] = i/10 + '0';
     name[6] = i%10 + '0';
     // only create new file for write
-    if (file.open(root, name, O_CREAT | O_EXCL | O_WRITE)) break;
+    if (file.open(&root, name, O_CREAT | O_EXCL | O_WRITE)) break;
   }
   if (!file.isOpen()) error ("file.create");
   PgmPrintln("Printing to: ");

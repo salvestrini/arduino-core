@@ -13,8 +13,8 @@ SdFile file;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -26,34 +26,33 @@ void error_P(const char *str)
   while(1);
 }
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(9600);
   Serial.println();
   Serial.println("type any character to start");
   while (!Serial.available());
   Serial.println();
   
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
   
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
 }
 
 /*
  * Print tail of all SdFat example files
  */
-void loop(void)
-{
+void loop(void) {
   dir_t dir;
   char name[13];
   
   // read next directory entry
-  if (root.readDir(dir) != sizeof(dir)) {
+  if (root.readDir(&dir) != sizeof(dir)) {
     Serial.println("End of Directory");
     while(1);
   }
@@ -75,10 +74,10 @@ void loop(void)
   uint32_t pos = root.curPosition();
   
   // open file
-  if (!file.open(root, name, O_READ)) error("file.open");
+  if (!file.open(&root, name, O_READ)) error("file.open failed");
   
   // restore root position
-  if (!root.seekSet(pos)) error("root.seekSet");
+  if (!root.seekSet(pos)) error("root.seekSet failed");
   
   // print file name message
   Serial.print("Tail of: ");
@@ -86,7 +85,7 @@ void loop(void)
   
   // position to tail of file
   if (file.fileSize() > 100) {
-    if (!file.seekSet(file.fileSize() - 100)) error("file.seekSet");
+    if (!file.seekSet(file.fileSize() - 100)) error("file.seekSet failed");
   }
   int16_t c;
   // find end of line  

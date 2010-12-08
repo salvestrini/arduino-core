@@ -13,8 +13,8 @@ SdFile root;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -33,16 +33,19 @@ void setup() {
   
   PgmPrint("Free RAM: ");
   Serial.println(FreeRam());  
- 
-  if (!card.init()) error("card.init failed!");
   
-  if (!volume.init(card)) error("vol.init failed!");
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) error("card.init failed!");
+  
+  // initialize a FAT volume
+  if (!volume.init(&card)) error("vol.init failed!");
 
   PgmPrint("Volume is FAT");
   Serial.println(volume.fatType(),DEC);
   Serial.println();
   
-  if (!root.openRoot(volume)) error("openRoot failed");
+  if (!root.openRoot(&volume)) error("openRoot failed");
 
   // list file in root with date and size
   PgmPrintln("Files found in root:");

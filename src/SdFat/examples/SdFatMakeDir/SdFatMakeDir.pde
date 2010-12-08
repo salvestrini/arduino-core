@@ -19,8 +19,8 @@ SdFile root;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -34,8 +34,7 @@ void error_P(const char *str)
 /*
  * create enough files to force a cluster to be allocated to dir.
  */
-void dirAllocTest(SdFile &dir)
-{
+void dirAllocTest(SdFile &dir) {
   char buf[13], name[13];
   SdFile file;
   uint16_t n; 
@@ -48,8 +47,8 @@ void dirAllocTest(SdFile &dir)
    
     // open start time
     uint32_t t0 = millis();
-    if (!file.open(dir, name, O_WRITE | O_CREAT | O_EXCL)) {
-      error("open write");
+    if (!file.open(&dir, name, O_WRITE | O_CREAT | O_EXCL)) {
+      error("open for write failed");
     }
    
     // open end time and write start time
@@ -81,23 +80,23 @@ void dirAllocTest(SdFile &dir)
    
     // open start time
     uint32_t t0 = millis();
-    if (!file.open(dir, name, O_READ)) {
-      error("open read");
+    if (!file.open(&dir, name, O_READ)) {
+      error("open for read failed");
     }
     
     // open end time and read start time
     uint32_t t1 = millis();
     int16_t nr = file.read(buf, 13);
-    if (nr < 5) error("file.read");
+    if (nr < 5) error("file.read failed");
     
     // read end time
     uint32_t t2 = millis();
     
     // check file content
     if (strlen(name) != nr || strncmp(name, buf, nr)) {
-      error("content");
+      error("content compare failed");
     }
-    if (!file.close()) error("close read");
+    if (!file.close()) error("close read failed");
     
     PgmPrint("RD ");
     Serial.print(i);
@@ -117,14 +116,15 @@ void setup() {
   PgmPrintln("Type any character to start");
   while (!Serial.available());
   
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_FULL_SPEED for best performance.
+  // try SPI_HALF_SPEED if bus errors occur.
+  if (!card.init(SPI_FULL_SPEED)) error("card.init failed");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
 
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   // write files to root if FAT32
   if (volume.fatType() == 32) {
@@ -134,13 +134,13 @@ void setup() {
   
   // create sub1 and write files
   SdFile sub1;
-  if (!sub1.makeDir(root, "SUB1")) error("makdeDir SUB1");
+  if (!sub1.makeDir(&root, "SUB1")) error("makdeDir SUB1 failed");
   PgmPrintln("Writing files to SUB1");
   dirAllocTest(sub1);
 
   // create sub2 and write files
   SdFile sub2;
-  if (!sub2.makeDir(sub1, "SUB2")) error("makeDir SUB2");
+  if (!sub2.makeDir(&sub1, "SUB2")) error("makeDir SUB2 failed");
   PgmPrintln("Writing files to SUB2"); 
   dirAllocTest(sub2);
   

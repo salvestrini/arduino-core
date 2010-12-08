@@ -128,8 +128,7 @@ void error(uint8_t errno) {
   }
 }
 
-void setup()
-{
+void setup() {
   WDTCSR |= (1 << WDCE) | (1 << WDE);
   WDTCSR = 0;
   Serial.begin(4800);
@@ -139,15 +138,17 @@ void setup()
   pinMode(powerPin, OUTPUT);
   digitalWrite(powerPin, LOW);
 
-  if (!card.init()) {
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) {
     putstring_nl("Card init. failed!");
     error(1);
   }
-  if (!volume.init(card)) {
+  if (!volume.init(&card)) {
     putstring_nl("No partition!");
     error(2);
   }
-  if(!root.openRoot(volume)) {
+  if(!root.openRoot(&volume)) {
     putstring_nl("Can't! open root dir");
     error(3);
   }
@@ -156,7 +157,7 @@ void setup()
     buffer[6] = '0' + i/10;
     buffer[7] = '0' + i%10;
     // create if does not exist, do not open existing, write, sync after write
-    if (f.open(root, buffer, O_CREAT | O_EXCL | O_WRITE | O_SYNC)) break;
+    if (f.open(&root, buffer, O_CREAT | O_EXCL | O_WRITE | O_SYNC)) break;
   }
   
   if(!f.isOpen()) {
@@ -217,8 +218,7 @@ void setup()
     putstring(WAAS_OFF);
 }
 
-void loop()
-{
+void loop() {
   //Serial.println(Serial.available(), DEC);
   char c;
   uint8_t sum;

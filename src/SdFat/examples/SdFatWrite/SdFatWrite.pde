@@ -15,8 +15,8 @@ SdFile file;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -30,15 +30,13 @@ void error_P(const char *str)
 /*
  * Write CR LF to a file
  */
-void writeCRLF(SdFile &f)
-{
-  f.write((uint8_t *)"\r\n", 2);
+void writeCRLF(SdFile& f) {
+  f.write((uint8_t*)"\r\n", 2);
 }
 /*
  * Write an unsigned number to a file
  */
-void writeNumber(SdFile &f, uint32_t n)
-{
+void writeNumber(SdFile& f, uint32_t n) {
   uint8_t buf[10];
   uint8_t i = 0;
   do {
@@ -51,35 +49,34 @@ void writeNumber(SdFile &f, uint32_t n)
 /*
  * Write a string to a file
  */
-void writeString(SdFile &f, char *str)
-{
+void writeString(SdFile& f, char *str) {
   uint8_t n;
   for (n = 0; str[n]; n++);
   f.write((uint8_t *)str, n);
 }
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(9600);
   Serial.println();
   Serial.println("Type any character to start");
   while (!Serial.available());
   
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
   
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
 
   // create a new file
   char name[] = "WRITE00.TXT";
   for (uint8_t i = 0; i < 100; i++) {
     name[5] = i/10 + '0';
     name[6] = i%10 + '0';
-    if (file.open(root, name, O_CREAT | O_EXCL | O_WRITE)) break;
+    if (file.open(&root, name, O_CREAT | O_EXCL | O_WRITE)) break;
   }
   if (!file.isOpen()) error ("file.create");
   Serial.print("Writing to: ");

@@ -17,7 +17,8 @@ SdFile file;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
+
+void error_P(const char* str)
 {
   PgmPrint("error: ");
   SerialPrintln_P(str);
@@ -38,18 +39,21 @@ void setup() {
   PgmPrint("Free RAM: ");
   Serial.println(FreeRam());  
  
-  if (!card.init()) error("card.init failed!");
+  // initialize the SD card at SPI_FULL_SPEED for best performance.
+  // try SPI_HALF_SPEED if bus errors occur.
+  if (!card.init(SPI_FULL_SPEED)) error("card.init failed");
   
-  if (!volume.init(card)) error("vol.init failed!");
+  // initialize a FAT volume
+  if (!volume.init(&card)) error("volume.init failed!");
 
   PgmPrint("Type is FAT");
   Serial.println(volume.fatType(), DEC);
   
-  if (!root.openRoot(volume)) error("openRoot failed");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   // open or create file - truncate existing file.
-  if (!file.open(root, "BENCH.DAT", O_CREAT | O_TRUNC | O_RDWR)) {
-    error("open");
+  if (!file.open(&root, "BENCH.DAT", O_CREAT | O_TRUNC | O_RDWR)) {
+    error("open failed");
   }
   
   // fill buf with known data
@@ -69,7 +73,7 @@ void setup() {
   uint32_t t = millis();
   for (uint32_t i = 0; i < n; i++) {
     if (file.write(buf, sizeof(buf)) != sizeof(buf)) {
-      error("write");
+      error("write failed");
     }
   }
   t = millis() - t;
@@ -86,7 +90,7 @@ void setup() {
   t = millis();
   for (uint32_t i = 0; i < n; i++) {
     if (file.read(buf, sizeof(buf)) != sizeof(buf)) {
-      error("read");
+      error("read failed");
     }
   }
   t = millis() - t;

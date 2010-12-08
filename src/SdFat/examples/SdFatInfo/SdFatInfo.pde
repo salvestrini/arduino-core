@@ -13,8 +13,7 @@ SdVolume vol;
 //global for card erase sector size
 uint32_t sectorSize; 
 
-void sdError(void)
-{
+void sdError(void) {
   PgmPrintln("SD error");
   PgmPrint("errorCode: ");
   Serial.println(card.errorCode(), HEX);
@@ -22,10 +21,10 @@ void sdError(void)
   Serial.println(card.errorData(), HEX);  
   return;
 }
-uint8_t cidDmp(void)
-{
+
+uint8_t cidDmp(void) {
   cid_t cid;
-  if (!card.readCID(cid)) {
+  if (!card.readCID(&cid)) {
     PgmPrint("readCID failed");
     sdError();
     return false;
@@ -52,12 +51,12 @@ uint8_t cidDmp(void)
   Serial.println();
   return true;
 }
-uint8_t csdDmp(void)
-{
+
+uint8_t csdDmp(void) {
   csd_t csd;
   uint8_t eraseSingleBlock;
   uint32_t cardSize = card.cardSize();
-  if (cardSize == 0 || !card.readCSD(csd)) {
+  if (cardSize == 0 || !card.readCSD(&csd)) {
     PgmPrintln("readCSD failed");
     sdError();
     return false;
@@ -91,30 +90,29 @@ uint8_t csdDmp(void)
   return true;
 }
 // print partition table
-uint8_t partDmp(void)
-{
+uint8_t partDmp(void) {
   part_t pt;
   PgmPrintln("\npart,boot,type,start,length");  
   for (uint8_t ip = 1; ip < 5; ip++) {
-      if (!card.readData(0, PART_OFFSET + 16*(ip-1), (uint8_t *)&pt, 16)) {
-        PgmPrint("read partition table failed");
-        sdError();
-        return false;
-      }
-      Serial.print(ip, DEC);
-      Serial.print(',');
-      Serial.print(pt.boot,HEX);
-      Serial.print(',');
-      Serial.print(pt.type, HEX);
-      Serial.print(',');
-      Serial.print(pt.firstSector);
-      Serial.print(',');
-      Serial.println(pt.totalSectors); 
+    if (!card.readData(0, PART_OFFSET + 16*(ip-1), 16, (uint8_t *)&pt)) {
+      PgmPrint("read partition table failed");
+      sdError();
+      return false;
+    }
+    Serial.print(ip, DEC);
+    Serial.print(',');
+    Serial.print(pt.boot,HEX);
+    Serial.print(',');
+    Serial.print(pt.type, HEX);
+    Serial.print(',');
+    Serial.print(pt.firstSector);
+    Serial.print(',');
+    Serial.println(pt.totalSectors); 
   }
   return true;
 }
-void volDmp(void)
-{
+
+void volDmp(void) {
   PgmPrint("\nVolume is FAT");
   Serial.println(vol.fatType(), DEC);
   PgmPrint("blocksPerCluster: ");
@@ -136,18 +134,18 @@ void volDmp(void)
   }
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
 }
 
-void loop()
-{
+void loop() {
   PgmPrintln("\ntype any character to start");
   while (!Serial.available());
   Serial.flush();
   uint32_t t = millis();
-  uint8_t r = card.init(0);
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  uint8_t r = card.init(SPI_HALF_SPEED);
   t = millis() - t;
   if (!r) {
     PgmPrintln("\ncard.init failed");
@@ -173,7 +171,7 @@ void loop()
   if(!cidDmp()) return;
   if(!csdDmp()) return;
   if(!partDmp()) return;
-  if (!vol.init(card)) {
+  if (!vol.init(&card)) {
     PgmPrintln("\nvol.init failed");
     sdError();
     return;

@@ -15,8 +15,8 @@ SdFile root;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -30,8 +30,7 @@ void error_P(const char *str)
 /*
  * remove all files in dir.
  */
-void deleteFiles(SdFile &dir)
-{
+void deleteFiles(SdFile &dir) {
   char name[13];
   SdFile file;
  
@@ -43,11 +42,11 @@ void deleteFiles(SdFile &dir)
      uint32_t t0 = millis();
      
      // assume done if open fails
-     if (!file.open(dir, name, O_WRITE)) return;
+     if (!file.open(&dir, name, O_WRITE)) return;
      
      // open end time and remove start time
      uint32_t t1 = millis();
-     if (!file.remove()) error("remove");
+     if (!file.remove()) error("file.remove failed");
      
      // remove end time
      uint32_t t2 = millis();
@@ -70,14 +69,15 @@ void setup() {
   PgmPrintln("Type any character to start");
   while (!Serial.available());
   
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_FULL_SPEED for best performance.
+  // try SPI_HALF_SPEED if bus errors occur.
+  if (!card.init(SPI_FULL_SPEED)) error("card.init failed");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
 
   // open the root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   // delete files in root if FAT32
   if (volume.fatType() == 32) {
@@ -87,22 +87,22 @@ void setup() {
   
   // open SUB1 and delete files
   SdFile sub1;
-  if (!sub1.open(root, "SUB1", O_READ)) error("open SUB1");
+  if (!sub1.open(&root, "SUB1", O_READ)) error("open SUB1 failed");
   PgmPrintln("Remove files in SUB1");
   deleteFiles(sub1);
 
   // open SUB2 and delete files
   SdFile sub2;
-  if (!sub2.open(sub1, "SUB2", O_READ)) error("open SUB2");
+  if (!sub2.open(&sub1, "SUB2", O_READ)) error("open SUB2 failed");
   PgmPrintln("Remove files in SUB2");
   deleteFiles(sub2);
 
   // remove SUB2
-  if (!sub2.rmDir()) error("sub2.rmDir");
+  if (!sub2.rmDir()) error("sub2.rmDir failed");
   PgmPrintln("SUB2 removed");
   
   // remove SUB1
-  if (!sub1.rmDir()) error("sub1.rmDir");
+  if (!sub1.rmDir()) error("sub1.rmDir failed");
   PgmPrintln("SUB1 removed");
 
   PgmPrintln("Done");

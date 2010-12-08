@@ -16,8 +16,8 @@ SdFile file;
 
 // store error strings in flash to save RAM
 #define error(s) error_P(PSTR(s))
-void error_P(const char *str)
-{
+
+void error_P(const char* str) {
   PgmPrint("error: ");
   SerialPrintln_P(str);
   if (card.errorCode()) {
@@ -29,8 +29,7 @@ void error_P(const char *str)
   while(1);
 }
 
-void setup(void)
-{
+void setup(void) {
   Serial.begin(9600);
   Serial.println();
   
@@ -39,21 +38,22 @@ void setup(void)
   while (!Serial.available());
 #endif //WAIT_TO_START
 
-  // initialize the SD card
-  if (!card.init()) error("card.init");
+  // initialize the SD card at SPI_HALF_SPEED to avoid bus errors with
+  // breadboards.  use SPI_FULL_SPEED for better performance.
+  if (!card.init(SPI_HALF_SPEED)) error("card.init failed");
   
   // initialize a FAT volume
-  if (!volume.init(card)) error("volume.init");
+  if (!volume.init(&card)) error("volume.init failed");
   
   // open root directory
-  if (!root.openRoot(volume)) error("openRoot");
+  if (!root.openRoot(&volume)) error("openRoot failed");
   
   // create a new file
   char name[] = "LOGGER00.CSV";
   for (uint8_t i = 0; i < 100; i++) {
     name[6] = i/10 + '0';
     name[7] = i%10 + '0';
-    if (file.open(root, name, O_CREAT | O_EXCL | O_WRITE)) break;
+    if (file.open(&root, name, O_CREAT | O_EXCL | O_WRITE)) break;
   }
   if (!file.isOpen()) error ("file.create");
   Serial.print("Logging to: ");
@@ -82,12 +82,11 @@ void setup(void)
 #endif  //ECHO_TO_SERIAL
 
   if (file.writeError || !file.sync()) {
-    error("write header");
+    error("write header failed");
   }
 }
 
-void loop(void)
-{
+void loop(void) {
   // clear print error
   file.writeError = 0;
   delay((LOG_INTERVAL -1) - (millis() % LOG_INTERVAL));
@@ -114,10 +113,10 @@ void loop(void)
   Serial.println();
 #endif //ECHO_TO_SERIAL
 
-  if (file.writeError) error("write data");
+  if (file.writeError) error("write data failed");
   
   //don't sync too often - requires 2048 bytes of I/O to SD card
   if ((millis() - syncTime) <  SYNC_INTERVAL) return;
   syncTime = millis();
-  if (!file.sync()) error("sync");
+  if (!file.sync()) error("sync failed");
 }
