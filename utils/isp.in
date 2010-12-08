@@ -1,28 +1,33 @@
 #!/bin/sh
 
 me="isp"
-
-input=$1
-output="${input}.hex"
+input="$1"
+output="$input.hex"
 
 if test x"$input" = x"" ; then
     echo "$me: Missing input file"
     exit 1
 fi
 
+echo "$me: File \`$input' size:"
+@AVR_SIZE_EXECUTABLE@ -d $input
+
+echo "$me: Creating hex file \`$output' from \`$input'"
 @AVR_OBJCOPY_EXECUTABLE@ -O ihex -R .eeprom $input $output || {
     echo "$me: Cannot transform input file \`$input'"
     exit 1
 }
 
-@AVR_SIZE_EXECUTABLE@ -d $input
-
 AVRDUDE_VERBOSITY=""
 
+echo "$me: Programming device \`@AVRDUDE_DEVICE@'"
 @AVRDUDE_EXECUTABLE@ $AVRDUDE_VERBOSITY -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
-    echo "$me: Cannot program device on \`@AVRDUDE_DEVICE@'"
+    echo "$me: Cannot program device \`@AVRDUDE_DEVICE@'"
     exit 1
 }
 
+echo "$me: Done!"
+
 rm -f $output
+
 exit 0
