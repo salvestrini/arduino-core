@@ -101,6 +101,7 @@ target_link_libraries(image
   AFSoftSerial
   SdFat
   Fat16
+  FAT16
 
   Matrix
   Ethernet
