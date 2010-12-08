@@ -53,9 +53,9 @@ add_subdirectory(Menu)
 include_directories(${ArduinoCode_SOURCE_DIR}/src/Menu)
 link_directories(${ArduinoCode_BINARY_DIR}/src/Menu)
 
-#add_subdirectory(microSD)
-#include_directories(${ArduinoCode_SOURCE_DIR}/src/microSD)
-#link_directories(${ArduinoCode_BINARY_DIR}/src/microSD)
+add_subdirectory(SD)
+include_directories(${ArduinoCode_SOURCE_DIR}/src/SD)
+link_directories(${ArduinoCode_BINARY_DIR}/src/SD)
 
 add_subdirectory(LED)
 include_directories(${ArduinoCode_SOURCE_DIR}/src/LED)
@@ -88,6 +88,7 @@ target_link_libraries(image
 #  NewSoftSerial
   Console
   AFSoftSerial
+  SD
 
   Matrix
   Ethernet
