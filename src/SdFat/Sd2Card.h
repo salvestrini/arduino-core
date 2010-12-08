@@ -56,8 +56,15 @@ uint8_t const SPI_QUARTER_SPEED = 2;
  * as an output by init().  An avr processor will not function as an SPI
  * master unless SS is set to output mode.
  */
+
+#define SPARKFUN_MICROSD_SHIELD_WORKAROUND 1
+
 /** The default chip select pin for the SD card is SS. */
+#if SPARKFUN_MICROSD_SHIELD_WORKAROUND
+uint8_t const  SD_CHIP_SELECT_PIN = 8;
+#else
 uint8_t const  SD_CHIP_SELECT_PIN = SS_PIN;
+#endif
 // The following three pins must not be redefined for hardware SPI.
 /** SPI Master Out Slave In pin */
 uint8_t const  SPI_MOSI_PIN = MOSI_PIN;

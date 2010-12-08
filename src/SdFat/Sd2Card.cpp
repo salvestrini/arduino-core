@@ -218,6 +218,9 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
   uint32_t arg;
 
   // set pin modes
+#if SPARKFUN_MICROSD_SHIELD_WORKAROUND
+  pinMode(10, OUTPUT);
+#endif
   pinMode(chipSelectPin_, OUTPUT);
   chipSelectHigh();
   pinMode(SPI_MISO_PIN, INPUT);
