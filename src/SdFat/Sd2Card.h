@@ -36,7 +36,7 @@
 //#define MEGA_SOFT_SPI
 
 //------------------------------------------------------------------------------
-#ifdef MEGA_SOFT_SPI && defined(__AVR_ATmega1280__)
+#if defined(MEGA_SOFT_SPI) && defined(__AVR_ATmega1280__)
 #define SOFTWARE_SPI
 #endif // MEGA_SOFT_SPI
 
