@@ -22,7 +22,7 @@
 #define PIN_LED    13
 
 #define PANIC_LED_SUPPORT 1
-#define TEST              7
+#define TEST              9
 
 #include <WProgram.h>
 
@@ -603,6 +603,38 @@ void loop()
 }
 #endif
 
-#if TEST > 8
+#if TEST == 9
+#include <E2PROM.h>
+
+void setup() {
+        Serial.begin(9600);
+
+        Serial.println("E2PROM dump:");
+}
+
+void loop()
+{
+        size_t i = 0;
+
+        // Ugly ... but who cares ? a test is a test ...
+        Serial.print(i);
+        Serial.print(": ");
+
+        for (; i < E2PROM.size(); i++) {
+                Serial.print(E2PROM.read(i), HEX);
+                Serial.print(" ");
+                if (i % 16 == 0) {
+                        Serial.println();
+
+                        Serial.print(i);
+                        Serial.print(": ");
+                }
+        }
+
+        panic();
+}
+#endif
+
+#if TEST > 9
 #error Undefined test
 #endif
