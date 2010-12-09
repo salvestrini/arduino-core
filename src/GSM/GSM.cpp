@@ -1,5 +1,5 @@
 //
-// Console - A console library
+// GSM - A GSM library
 //
 // Copyright (c) 2010 Francesco Salvestrini.  All right reserved.
 //
