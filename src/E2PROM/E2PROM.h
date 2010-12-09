@@ -25,6 +25,7 @@ class E2PROMClass {
  public:
         uint8_t read(size_t address);
         void    write(size_t address, uint8_t value);
+        size_t  size();
 
  private:
         bool isAddressOK(size_t address);

@@ -36,6 +36,9 @@
 bool E2PROMClass::isAddressOK(size_t address)
 { return ((address < MAX_ADDRESS) ? true : false); }
 
+size_t E2PROMClass::size()
+{ return MAX_ADDRESS; }
+
 uint8_t E2PROMClass::read(size_t address)
 {
         if (!isAddressOK(address)) {
