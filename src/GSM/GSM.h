@@ -35,7 +35,7 @@ class GSM : private AFSoftSerial {
             long    rate   = GSM_RATE);
         ~GSM();
 
-        void send(const char number[],
+        bool send(const char number[],
                   const char message[]);
 
  private:

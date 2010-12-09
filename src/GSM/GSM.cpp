@@ -82,7 +82,7 @@ bool GSM::isOK()
         return waitForOK();
 }
 
-void GSM::send(const char number[],
+bool GSM::send(const char number[],
                const char message[])
 {
         println(GSM_CMD_SET_SMS_TXT_MODE);
@@ -98,4 +98,6 @@ void GSM::send(const char number[],
         print(message);
         println(26, BYTE); // CTRL+Z
         delay(DELAY_AFTER_COMMAND);
+
+        return isOK();
 }
