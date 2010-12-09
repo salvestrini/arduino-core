@@ -105,6 +105,7 @@ target_link_libraries(image
   LED
   Console
   GSM
+  E2PROM
 
 #  NewSoftSerial
   AFSoftSerial
