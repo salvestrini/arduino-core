@@ -43,21 +43,6 @@ include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/SoftwareSerial)
 link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/SoftwareSerial)
 
 #
-# Our libraries
-#
-add_subdirectory(SerLCD)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SerLCD)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/SerLCD)
-
-add_subdirectory(Menu)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Menu)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/Menu)
-
-add_subdirectory(LED)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/LED)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/LED)
-
-#
 # Third parties
 #
 add_subdirectory(SdFat)
@@ -80,9 +65,28 @@ add_subdirectory(AFSoftSerial)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/AFSoftSerial)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/AFSoftSerial)
 
+#
+# Our libraries
+#
+add_subdirectory(SerLCD)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SerLCD)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/SerLCD)
+
+add_subdirectory(Menu)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Menu)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/Menu)
+
+add_subdirectory(LED)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/LED)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/LED)
+
 add_subdirectory(Console)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Console)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/Console)
+
+add_subdirectory(GSM)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/GSM)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/GSM)
 
 #
 # Executable
@@ -96,6 +100,7 @@ target_link_libraries(image
   Menu
   LED
   Console
+  GSM
 
 #  NewSoftSerial
   AFSoftSerial
