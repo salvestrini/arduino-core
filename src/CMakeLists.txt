@@ -88,6 +88,10 @@ add_subdirectory(GSM)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/GSM)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/GSM)
 
+add_subdirectory(E2PROM)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/E2PROM)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/E2PROM)
+
 #
 # Executable
 #
