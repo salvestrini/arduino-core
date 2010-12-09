@@ -15,7 +15,7 @@ echo "$me: Creating hex file \`$output' from \`$input'"
     exit 1
 }
 
-AVRDUDE_VERBOSITY="-v -v"
+AVRDUDE_VERBOSITY=""
 
 echo "$me: Programming device \`@AVRDUDE_DEVICE@'"
 @AVRDUDE_EXECUTABLE@ $AVRDUDE_VERBOSITY -C @AVRDUDE_CONFIGURATION@ -D -F -V -c arduino -b @AVRDUDE_SPEED@ -p @AVRDUDE_FAMILY@ -P @AVRDUDE_DEVICE@ -U flash:w:$output || {
