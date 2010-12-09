@@ -15,5 +15,10 @@ set(AVRDUDE_FAMILY "m168"         CACHE STRING   "ISP programming family")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/isp.in ${CMAKE_CURRENT_BINARY_DIR}/isp)
 
-add_custom_target(upload ${CMAKE_CURRENT_BINARY_DIR}/isp ${ArduinoCode_BINARY_DIR}/src/image)
-add_dependencies(upload image)
+add_custom_target(image_size
+  @AVR_SIZE_EXECUTABLE@ -d ${ArduinoCode_BINARY_DIR}/src/image)
+add_dependencies(image_size image)
+
+add_custom_target(image_upload
+  ${CMAKE_CURRENT_BINARY_DIR}/isp ${ArduinoCode_BINARY_DIR}/src/image)
+add_dependencies(image_upload image)

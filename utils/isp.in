@@ -9,9 +9,6 @@ if test x"$input" = x"" ; then
     exit 1
 fi
 
-echo "$me: File \`$input' size:"
-@AVR_SIZE_EXECUTABLE@ -d $input
-
 echo "$me: Creating hex file \`$output' from \`$input'"
 @AVR_OBJCOPY_EXECUTABLE@ -O ihex -R .eeprom $input $output || {
     echo "$me: Cannot transform input file \`$input'"
