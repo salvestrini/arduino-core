@@ -2,7 +2,7 @@
 
 message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
-set(ARDUINO_TYPE diecimila CACHE STRING "Arduino type")
+set(ARDUINO_TYPE duemilanove CACHE STRING "Arduino type")
 
 include(arduino-${ARDUINO_TYPE})
 
