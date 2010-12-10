@@ -92,6 +92,10 @@ add_subdirectory(E2PROM)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/E2PROM)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/E2PROM)
 
+add_subdirectory(Morse)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Morse)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/Morse)
+
 #
 # Executable
 #
@@ -106,6 +110,7 @@ target_link_libraries(image
   Console
   GSM
   E2PROM
+  Morse
 
 #  NewSoftSerial
   AFSoftSerial
