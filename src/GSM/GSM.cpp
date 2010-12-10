@@ -19,6 +19,7 @@
 //
 
 #include <WProgram.h>
+
 #include "GSM.h"
 
 #define GSM_CMD_SET_SMS_TXT_MODE "AT+CMGF=1" 
