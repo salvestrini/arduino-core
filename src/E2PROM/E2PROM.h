@@ -21,6 +21,8 @@
 #ifndef E2PROM_H
 #define E2PROM_H
 
+#include <stdlib.h>
+
 class E2PROMClass {
  public:
         uint8_t read(size_t address);

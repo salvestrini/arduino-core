@@ -19,7 +19,7 @@
 //
 
 #include <avr/eeprom.h>
-#include "WConstants.h"
+//#include "WConstants.h"
 
 #include "E2PROM.h"
 
