@@ -21,10 +21,15 @@
 #define PIN_LCD     2
 #define PIN_LED    13
 
-#define PANIC_LED_SUPPORT 1
-#define TEST              9
+#define PANIC_LED_SUPPORT   1
+#define PANIC_MORSE_SUPPORT 0
+#define TEST                9
 
 #include <WProgram.h>
+
+#if PANIC_MORSE_SUPPORT
+#include "Morse.h"
+#endif
 
 #if PANIC_LED_SUPPORT
 #include "LED.h"
@@ -32,12 +37,42 @@
 LED led(PIN_LED);
 #endif
 
+#if PANIC_MORSE_SUPPORT
+void dash()
+{
+#if PANIC_LED_SUPPORT
+        led.on();
+#endif
+        delay(2000);
+#if PANIC_LED_SUPPORT
+        led.off();
+#endif
+}
+
+void dot()
+{
+#if PANIC_LED_SUPPORT
+        led.on();
+#endif
+        delay(1000);
+#if PANIC_LED_SUPPORT
+        led.off();
+#endif
+}
+
+Morse m;
+#endif
+
 void panic()
 {
         for (;;) {
+#if PANIC_MORSE_SUPPORT
+                m.write("SOS", dash, dot);
+#else
                 delay(100);
 #if PANIC_LED_SUPPORT
                 led.toggle();
+#endif
 #endif
         }
 }
