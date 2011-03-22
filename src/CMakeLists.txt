@@ -3,44 +3,41 @@ message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 #
 # Core libraries
 #
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/core)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/core)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Core)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Core)
 
-#
-# External libraries
-#
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Matrix)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Matrix)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Matrix)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Matrix)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Ethernet)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Ethernet)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Ethernet)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Ethernet)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Stepper)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Stepper)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Stepper)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Stepper)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Sprite)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Sprite)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Sprite)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Sprite)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Firmata)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Firmata)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Firmata)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Firmata)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/LiquidCrystal)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/LiquidCrystal)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/LiquidCrystal)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/LiquidCrystal)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Wire)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Wire)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Wire)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Wire)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/EEPROM)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/EEPROM)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/EEPROM)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/EEPROM)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/Servo)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/Servo)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/Servo)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/Servo)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/SPI)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/SPI)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/SPI)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/SPI)
 
-include_directories(${ArduinoCode_SOURCE_DIR}/libs/libraries/SoftwareSerial)
-link_directories(${ArduinoCode_BINARY_DIR}/libs/libraries/SoftwareSerial)
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/SoftwareSerial)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/SoftwareSerial)
 
 #
 # Third parties
