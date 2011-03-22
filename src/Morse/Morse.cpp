@@ -24,6 +24,8 @@
 
 #include "Morse.h"
 
+// http://en.wikipedia.org/wiki/Morse_code
+
 const struct Morse::code Morse::codes_[] = {
         { 'A', ".- "   }, { 'B', "-... " }, { 'C', "-.-. " }, { 'D', "-.. "  },
         { 'E', ". "    }, { 'F', "..-. " }, { 'G', "--. "  }, { 'H', ".... " },
