@@ -6,6 +6,9 @@ message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/Core)
 link_directories(${ArduinoCode_BINARY_DIR}/libs/Core)
 
+include_directories(${ArduinoCode_SOURCE_DIR}/libs/SD)
+link_directories(${ArduinoCode_BINARY_DIR}/libs/SD)
+
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/Matrix)
 link_directories(${ArduinoCode_BINARY_DIR}/libs/Matrix)
 

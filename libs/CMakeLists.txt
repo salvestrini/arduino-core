@@ -1,6 +1,7 @@
 message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
 add_subdirectory(Core)
+add_subdirectory(SD)
 add_subdirectory(EEPROM)
 add_subdirectory(Ethernet)
 add_subdirectory(Firmata)
