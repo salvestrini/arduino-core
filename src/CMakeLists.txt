@@ -130,5 +130,5 @@ target_link_libraries(image
   SPI
   SoftwareSerial
 
-  core
+  Core
   )

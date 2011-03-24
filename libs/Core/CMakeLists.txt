@@ -9,7 +9,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DI
 include_directories(${ArduinoCode_SOURCE_DIR}/libs/Core)
 include_directories(${ArduinoCode_BINARY_DIR}/libs/Core)
 
-add_library(core STATIC
+add_library(Core STATIC
   HardwareSerial.cpp
   Print.cpp
   Tone.cpp
