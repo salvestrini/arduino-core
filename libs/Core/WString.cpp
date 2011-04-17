@@ -417,7 +417,7 @@ String String::trim() const
   return temp.substring( i, j + 1);
 }
 
-void String::getBytes(unsigned char *buf, unsigned int bufsize)
+void String::getBytes(unsigned char *buf, unsigned int bufsize) const
 {
   if (!bufsize || !buf) return;
   unsigned int len = bufsize - 1;
@@ -426,7 +426,7 @@ void String::getBytes(unsigned char *buf, unsigned int bufsize)
   buf[len] = 0;
 }
 
-void String::toCharArray(char *buf, unsigned int bufsize)
+void String::toCharArray(char *buf, unsigned int bufsize) const
 {
   if (!bufsize || !buf) return;
   unsigned int len = bufsize - 1;
