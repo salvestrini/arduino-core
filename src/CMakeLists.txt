@@ -65,6 +65,10 @@ add_subdirectory(AFSoftSerial)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/AFSoftSerial)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/AFSoftSerial)
 
+add_subdirectory(USBHost)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/USBHost)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/USBHost)
+
 #
 # Our libraries
 #
