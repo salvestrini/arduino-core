@@ -39,9 +39,7 @@ set(CMAKE_C_FLAGS          "${CMAKE_C_FLAGS}   ${ARDUINO_MCU} ${ARDUINO_DEFS} ${
 set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS} ${ARDUINO_MCU} ${ARDUINO_DEFS} ${ARDUINO_CXX_FLAGS_OPT} ${ARDUINO_CXX_FLAGS_STANDARD} ${ARDUINO_CXX_FLAGS_WARN} ${ARDUINO_CXX_FLAGS_TUNING}")
 set(CMAKE_EXE_LINKER_FLAGS "")
 
-add_subdirectory(utils)
 add_subdirectory(libs)
-add_subdirectory(src)
 
 include(FeatureSummary)
 print_enabled_features()
