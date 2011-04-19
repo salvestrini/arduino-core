@@ -27,7 +27,7 @@ find_program(AVR_LINKER_EXECUTABLE  avr-ld)
 set(CMAKE_C_COMPILER   ${AVR_GCC_EXECUTABLE})
 set(CMAKE_CXX_COMPILER ${AVR_GXX_EXECUTABLE})
 
-project(ArduinoCode)
+project(ArduinoBuild)
 
 set(CMAKE_AR           ${AVR_AR_EXECUTABLE})
 set(CMAKE_RANLIB       ${AVR_RANLIB_EXECUTABLE})
@@ -39,7 +39,7 @@ set(CMAKE_C_FLAGS          "${CMAKE_C_FLAGS}   ${ARDUINO_MCU} ${ARDUINO_DEFS} ${
 set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS} ${ARDUINO_MCU} ${ARDUINO_DEFS} ${ARDUINO_CXX_FLAGS_OPT} ${ARDUINO_CXX_FLAGS_STANDARD} ${ARDUINO_CXX_FLAGS_WARN} ${ARDUINO_CXX_FLAGS_TUNING}")
 set(CMAKE_EXE_LINKER_FLAGS "")
 
-add_subdirectory(libs)
+add_subdirectory(src)
 
 include(FeatureSummary)
 print_enabled_features()
