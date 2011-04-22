@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 message(STATUS "Including ${CMAKE_CURRENT_LIST_FILE}")
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/extras/cmake")
 
 set(CMAKE_SYSTEM_NAME      Generic)
 set(CMAKE_SYSTEM_VERSION   1)
@@ -39,6 +39,7 @@ set(CMAKE_C_FLAGS          "${CMAKE_C_FLAGS}   ${ARDUINO_MCU} ${ARDUINO_DEFS} ${
 set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS} ${ARDUINO_MCU} ${ARDUINO_DEFS} ${ARDUINO_CXX_FLAGS_OPT} ${ARDUINO_CXX_FLAGS_STANDARD} ${ARDUINO_CXX_FLAGS_WARN} ${ARDUINO_CXX_FLAGS_TUNING}")
 set(CMAKE_EXE_LINKER_FLAGS "")
 
+add_subdirectory(extras)
 add_subdirectory(src)
 
 include(FeatureSummary)
