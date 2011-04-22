@@ -1,9 +1,9 @@
-Instructions:
+To build all libraries
 
-1) cd build
-2) cmake .. (or cmake-gui)
-3) make
-4) make upload
+1) mkdir build
+2) cd build
+3) cmake .. (or cmake-gui)
+4) make
 
 Have fun,
 Francesco
