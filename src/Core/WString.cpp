@@ -150,14 +150,16 @@ const String & String::operator+=( const String &other )
   _length += other._length;
   if ( _length > _capacity )
   {
-    char *temp = _buffer;
-    getBuffer( _length );
-    if ( _buffer != NULL )
-      strcpy( _buffer, temp );
-    free(temp);
+    char *temp = (char *)realloc(_buffer, _length + 1);
+    if ( temp != NULL ) {
+      _buffer = temp;
+      _capacity = _length;
+    } else {
+      _length -= other._length;
+      return *this;
+    }
   }
-  if ( _buffer != NULL )
-    strcat( _buffer, other._buffer );
+  strcat( _buffer, other._buffer );
   return *this;
 }
 
@@ -417,7 +419,7 @@ String String::trim() const
   return temp.substring( i, j + 1);
 }
 
-void String::getBytes(unsigned char *buf, unsigned int bufsize) const
+void String::getBytes(unsigned char *buf, unsigned int bufsize)
 {
   if (!bufsize || !buf) return;
   unsigned int len = bufsize - 1;
@@ -426,11 +428,16 @@ void String::getBytes(unsigned char *buf, unsigned int bufsize) const
   buf[len] = 0;
 }
 
-void String::toCharArray(char *buf, unsigned int bufsize) const
+void String::toCharArray(char *buf, unsigned int bufsize)
 {
   if (!bufsize || !buf) return;
   unsigned int len = bufsize - 1;
   if (len > _length) len = _length;
   strncpy(buf, _buffer, len);
   buf[len] = 0;
+}
+
+
+long String::toInt() {
+  return atol(_buffer);
 }
